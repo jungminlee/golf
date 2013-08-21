@@ -47,7 +47,7 @@ public class L02_01_FriendInfoLayout {
 			l02_01_layout_temp.setBackgroundColor(Color.alpha(0));
 			l02_01_layout_friendinfo.addView(l02_01_layout_temp);
 
-			tempHeight = ((int) (((float) 203 * (float) viewHight) / (float) 800));
+			tempHeight = ((int) (((float) 226 * (float) viewHight) / (float) 800));
 			relative = new RelativeLayout(context);
 			relative.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, tempHeight));
 			l02_01_layout_friendinfo.addView(relative);
@@ -57,7 +57,7 @@ public class L02_01_FriendInfoLayout {
 				relative.addView(base);
 				{
 					paddingleft = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 12 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 14 * (float) viewHight) / (float) 800));
 					tempWidth = ((int) (((float) 111 * (float) viewWidth) / (float) 480));
 					tempHeight = ((int) (((float) 111 * (float) viewHight) / (float) 800));
 					l02_01_img_pic = new ImageView(context);
@@ -140,8 +140,8 @@ public class L02_01_FriendInfoLayout {
 
 					tempWidth = ((int) (((float) 297 * (float) viewWidth) / (float) 480));
 					tempHeight = ((int) (((float) 48 * (float) viewHight) / (float) 800));
-					paddingleft = ((int) (((float) 98 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 15 * (float) viewHight) / (float) 800));
+					paddingleft = ((int) (((float) 90 * (float) viewWidth) / (float) 480));
+					paddingtop = ((int) (((float) 36 * (float) viewHight) / (float) 800));
 					l02_01_btn_sendMessage = new View(context);
 					LinearLayout.LayoutParams param7 = new LinearLayout.LayoutParams(tempWidth, tempHeight);
 					param7.setMargins(paddingleft, paddingtop, 0, 0);

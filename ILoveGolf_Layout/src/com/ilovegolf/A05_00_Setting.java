@@ -11,15 +11,16 @@ import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ilovegolf.adapter.A05_00_SettingMenuAdapter;
+import com.ilovegolf.layout.L05_00_SettingLayout;
 import com.ilovegolf.util.StaticClass;
 import com.ilovegolf.util.TabActivity;
 
@@ -28,12 +29,21 @@ public class A05_00_Setting extends TabActivity {
 	View tab_FindGolf = null;
 	View tab_TalkList = null;
 
+	L05_00_SettingLayout layout = null;
+
 	ArrayList<String> menuList = null;
 	ListView list_menulist = null;
 	A05_00_SettingMenuAdapter menuListAdapter = null;
 
+	TextView btn_profile = null;
+	TextView btn_alarm = null;
+	TextView btn_qna = null;
+	TextView btn_pay = null;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		layout = new L05_00_SettingLayout();
+		setContentView(layout.getLayout(context, display));
 
 		bFriend = true;
 		bFindLink = true;
@@ -43,44 +53,77 @@ public class A05_00_Setting extends TabActivity {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 
 		tab_Setting.setBackgroundResource(R.drawable.main_topbar_menu_04_on);
-		
-		RelativeLayout relative_content=layout.b00_00_relative_content;
-		LinearLayout linear=layout.linear;
-		linear.removeView(relative_content);
 
-		menuList = new ArrayList<String>();
-		menuList.add("프로필 변경");
-		menuList.add("알림 설정");
-		menuList.add("문의 하기");
-		menuList.add("결제 내역");
+		ListView list_content = layout.b00_00_list_content;
+		LinearLayout linear = layout.linear;
+		linear.removeView(list_content);
 
-		menuListAdapter = new A05_00_SettingMenuAdapter(context, display, menuList);
-		list_menulist = layout.b00_00_list_content;
-		list_menulist.setAdapter(menuListAdapter);
+		btn_profile = layout.l05_00_btn_profile;
+		btn_alarm = layout.l05_00_btn_alarm;
+		btn_qna = layout.l05_00_btn_qna;
+		btn_pay = layout.l05_00_btn_pay;
 
-		list_menulist.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View v, int id, long arg3) {
-				if (id == 0) {
-					Intent intent = new Intent(getBaseContext(), A05_01_00_00_Profile.class);
-					startActivity(intent);
-				} else if (id == 1) {
-					Intent intent = new Intent(getBaseContext(), A05_02_AlarmSetting.class);
-					startActivity(intent);
-				} else if (id == 2) {
-					Uri uri=Uri.parse("mailto:ljm4843@dalbitsoft.com");
-					Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-					intent.putExtra(intent.EXTRA_SUBJECT, "[아이러브골프]문의메일");
-					startActivity(intent);
-				} else if (id == 3) {
-					Intent intent = new Intent(getBaseContext(), A05_04_Payment.class);
-					startActivity(intent);
-					finish();
-				}
-			}
-		});
-		
+		btn_profile.setOnClickListener(onClick);
+		btn_alarm.setOnClickListener(onClick);
+		btn_qna.setOnClickListener(onClick);
+		btn_pay.setOnClickListener(onClick);
+
+		btn_profile.setOnTouchListener(onTouch);
+		btn_alarm.setOnTouchListener(onTouch);
+		btn_qna.setOnTouchListener(onTouch);
+		btn_pay.setOnTouchListener(onTouch);
 	}
+
+	OnClickListener onClick = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (v == btn_profile) {
+				Intent intent = new Intent(getBaseContext(), A05_01_00_00_Profile.class);
+				startActivity(intent);
+			}else if (v == btn_alarm) {
+				Intent intent = new Intent(getBaseContext(), A05_02_AlarmSetting.class);
+				startActivity(intent);
+			}else if (v == btn_qna) {
+				Uri uri = Uri.parse("mailto:ljm4843@dalbitsoft.com");
+				Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+				intent.putExtra(intent.EXTRA_SUBJECT, "[아이러브골프]문의메일");
+				startActivity(intent);
+			}else if (v == btn_pay) {
+				Intent intent = new Intent(getBaseContext(), A05_04_Payment.class);
+				startActivity(intent);
+				finish();
+			}
+		}
+	};
+
+	OnTouchListener onTouch = new OnTouchListener() {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (v == btn_profile) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					v.setBackgroundResource(R.drawable.golf_setup_profile_line_on);
+				else if (event.getAction() == MotionEvent.ACTION_UP)
+					v.setBackgroundResource(R.drawable.golf_setup_profile_line);
+			}else if (v == btn_alarm) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					v.setBackgroundResource(R.drawable.golf_setup_alam_line_on);
+				else if (event.getAction() == MotionEvent.ACTION_UP)
+					v.setBackgroundResource(R.drawable.golf_setup_alam_line);
+			}else if (v == btn_qna) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					v.setBackgroundResource(R.drawable.golf_setup_qna_line_on);
+				else if (event.getAction() == MotionEvent.ACTION_UP)
+					v.setBackgroundResource(R.drawable.golf_setup_qna_line);
+			}else if (v == btn_pay) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					v.setBackgroundResource(R.drawable.golf_setup_pay_line_on);
+				else if (event.getAction() == MotionEvent.ACTION_UP)
+					v.setBackgroundResource(R.drawable.golf_setup_pay_line);
+			}
+			return false;
+		}
+	};
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == event.KEYCODE_BACK) {

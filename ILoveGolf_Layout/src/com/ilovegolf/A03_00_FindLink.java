@@ -65,7 +65,7 @@ public class A03_00_FindLink extends TabActivity {
 		tab_FindLink.setBackgroundResource(drawable.main_topbar_menu_02_on);
 		layout_findlink = layout.b00_00_TabLayout;
 
-		RelativeLayout relative_content = layout.b00_00_relative_content;
+		LinearLayout relative_content = layout.b00_00_linear_content;
 		LinearLayout linear = layout.linear;
 		linear.removeView(relative_content);
 

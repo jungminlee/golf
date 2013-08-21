@@ -70,7 +70,7 @@ public class A02_00_Friend extends TabActivity {
 		tab_Friend.setBackgroundResource(drawable.main_topbar_menu_01_on);
 		layout_Friend = layout.b00_00_TabLayout;
 
-		RelativeLayout relative_content = layout.b00_00_relative_content;
+		LinearLayout relative_content = layout.b00_00_linear_content;
 		LinearLayout linear = layout.linear;
 		linear.removeView(relative_content);
 

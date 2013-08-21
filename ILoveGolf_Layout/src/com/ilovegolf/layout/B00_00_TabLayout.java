@@ -20,7 +20,7 @@ public class B00_00_TabLayout {
 	public View b00_00_tab_findlink = null;
 	public View b00_00_tab_talkroomlist = null;
 	public View b00_00_tab_setting = null;
-	public RelativeLayout b00_00_relative_content = null;
+	public LinearLayout b00_00_linear_content = null;
 	public ListView b00_00_list_content = null;
 	public ImageView b00_00_img_pic = null;
 	public LinearLayout linear=null;
@@ -77,26 +77,11 @@ public class B00_00_TabLayout {
 					linear2.addView(b00_00_tab_setting);
 				}
 
-				tempHeight = ((int) (((float) 203 * (float) viewHight) / (float) 800));
-				b00_00_relative_content = new RelativeLayout(context);
-				b00_00_relative_content.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, tempHeight));
-				linear.addView(b00_00_relative_content);
+				b00_00_linear_content = new LinearLayout(context);
+				b00_00_linear_content.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+				b00_00_linear_content.setOrientation(LinearLayout.VERTICAL);
+				linear.addView(b00_00_linear_content);
 				{
-					paddingleft = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 17 * (float) viewHight) / (float) 800));
-					tempWidth = ((int) (((float) 111 * (float) viewWidth) / (float) 480));
-					tempHeight = ((int) (((float) 111 * (float) viewHight) / (float) 800));
-					b00_00_img_pic = new ImageView(context);
-					LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(new LayoutParams(tempWidth, tempHeight));
-					param.setMargins(paddingleft, paddingtop, 0, 0);
-					b00_00_img_pic.setLayoutParams(param);
-					b00_00_img_pic.setBackgroundColor(Color.WHITE);
-					b00_00_relative_content.addView(b00_00_img_pic);
-					
-					LinearLayout linear3 = new LinearLayout(context);
-					linear3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-					linear3.setBackgroundResource(R.drawable.profile_bg);
-					b00_00_relative_content.addView(linear3);
 				}
 
 				b00_00_list_content = new ListView(context);

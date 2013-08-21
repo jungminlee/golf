@@ -1,15 +1,11 @@
 package com.ilovegolf.layout;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
-import com.google.android.gms.maps.MapFragment;
 import com.ilovegolf.R;
 
 public class L03_01_MapLayout extends B00_01_BarLayout{

@@ -48,7 +48,7 @@ public class L03_01_LinkInfoLayout {
 			l03_01_layout_temp.setBackgroundColor(Color.alpha(0));
 			l03_01_layout_linkinfo.addView(l03_01_layout_temp);
 
-			tempHeight = ((int) (((float) 203 * (float) viewHight) / (float) 800));
+			tempHeight = ((int) (((float) 226 * (float) viewHight) / (float) 800));
 			System.out.println(":::::::::::" + tempHeight);
 			relative = new RelativeLayout(context);
 			relative.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, tempHeight));
@@ -59,7 +59,7 @@ public class L03_01_LinkInfoLayout {
 				relative.addView(base);
 				{
 					paddingleft = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 15 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 14 * (float) viewHight) / (float) 800));
 					tempWidth = ((int) (((float) 111 * (float) viewWidth) / (float) 480));
 					tempHeight = ((int) (((float) 111 * (float) viewHight) / (float) 800));
 					l03_01_img_pic = new ImageView(context);
@@ -112,9 +112,9 @@ public class L03_01_LinkInfoLayout {
 						linear2.addView(l03_01_btn_close);
 					}
 					paddingleft = ((int) (((float) 165 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 3 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 5 * (float) viewHight) / (float) 800));
 					paddingright = ((int) (((float) 42 * (float) viewWidth) / (float) 480));
-					tempHeight = ((int) (((float) 28 * (float) viewHight) / (float) 800));
+					tempHeight = ((int) (((float) 35 * (float) viewHight) / (float) 800));
 					l03_01_text_address = new TextView(context);
 					LinearLayout.LayoutParams param6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 					param6.setMargins(paddingleft, paddingtop, paddingright, 0);
@@ -126,10 +126,10 @@ public class L03_01_LinkInfoLayout {
 					linear.addView(l03_01_text_address);
 
 					paddingleft = ((int) (((float) 168 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 3 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 5 * (float) viewHight) / (float) 800));
 					paddingright = ((int) (((float) 44 * (float) viewWidth) / (float) 480));
-					paddingbottom = ((int) (((float) 3 * (float) viewHight) / (float) 800));
-					tempHeight = ((int) (((float) 28 * (float) viewHight) / (float) 800));
+					paddingbottom = ((int) (((float) 5 * (float) viewHight) / (float) 800));
+					tempHeight = ((int) (((float) 35 * (float) viewHight) / (float) 800));
 					l03_01_text_msg = new TextView(context);
 					param6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 					param6.setMargins(paddingleft, paddingtop, paddingright, paddingbottom);
@@ -139,8 +139,8 @@ public class L03_01_LinkInfoLayout {
 					l03_01_text_msg.setTextSize(13);
 					linear.addView(l03_01_text_msg);
 
-					paddingtop = ((int) (((float) 15 * (float) viewHight) / (float) 800));
-					paddingleft = ((int) (((float) 98 * (float) viewWidth) / (float) 480));
+					paddingtop = ((int) (((float) 30 * (float) viewHight) / (float) 800));
+					paddingleft = ((int) (((float) 82 * (float) viewWidth) / (float) 480));
 					LinearLayout linear6 = new LinearLayout(context);
 					LinearLayout.LayoutParams param7 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 					param7.setMargins(paddingleft, paddingtop, 0, 0);
@@ -155,7 +155,7 @@ public class L03_01_LinkInfoLayout {
 						l03_01_btn_map.setBackgroundResource(R.drawable.btn_position_golf_off);
 						linear6.addView(l03_01_btn_map);
 
-						paddingleft = ((int) (((float) 3 * (float) viewWidth) / (float) 480));
+						paddingleft = ((int) (((float) 21 * (float) viewWidth) / (float) 480));
 						l03_01_btn_call = new View(context);
 						param7 = new LinearLayout.LayoutParams(tempWidth, tempHeight);
 						param7.setMargins(paddingleft, 0, 0, 0);

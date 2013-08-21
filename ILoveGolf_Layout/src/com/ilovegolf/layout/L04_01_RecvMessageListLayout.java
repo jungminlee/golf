@@ -60,7 +60,7 @@ public class L04_01_RecvMessageListLayout extends B00_01_BarLayout{
 			l04_01_layout_recvmessage.addView(linear5);
 
 			{
-				tempHeight = ((int) (((float) 90 * (float) viewHight) / (float) 800));
+				tempHeight = ((int) (((float) 48 * (float) viewHight) / (float) 800));
 				paddingLeft = ((int) (((float) 5 * (float) viewWidth) / (float) 480));
 				paddingTop = ((int) (((float) 5 * (float) viewHight) / (float) 800));
 				l04_01_edit_message = new EditText(context);
@@ -68,6 +68,7 @@ public class L04_01_RecvMessageListLayout extends B00_01_BarLayout{
 				params.weight = 1;
 				params.setMargins(paddingLeft, paddingTop, paddingLeft, paddingTop);
 				l04_01_edit_message.setLayoutParams(params);
+				l04_01_edit_message.setMinHeight(tempHeight);
 				l04_01_edit_message.setBackgroundResource(R.drawable.talk_input);
 				l04_01_edit_message.setMaxHeight(tempHeight);
 				linear5.addView(l04_01_edit_message);

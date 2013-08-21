@@ -42,7 +42,7 @@ public class A04_00_ChattingRoom extends TabActivity {
 		bTalkRoomList = false;
 		bSetting = true;
 
-		RelativeLayout relative_content = layout.b00_00_relative_content;
+		LinearLayout relative_content = layout.b00_00_linear_content;
 		LinearLayout linear = layout.linear;
 		linear.removeView(relative_content);
 
