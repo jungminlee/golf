@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@color/common_signin_btn_dark_text_pressed" android:state_pressed="true"/>
-
-</selector>
+    <item android:drawable="@color/common_signin_btn_dark_text_pressed" android:state_pressed="true"/></selector>
