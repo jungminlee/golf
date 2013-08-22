@@ -25,11 +25,7 @@ import com.ilovegolf.util.StaticClass;
 import com.ilovegolf.util.TabActivity;
 
 public class A05_00_Setting extends TabActivity {
-	View tab_Friend = null;
-	View tab_FindGolf = null;
-	View tab_TalkList = null;
-
-	L05_00_SettingLayout layout = null;
+	L05_00_SettingLayout settinglayout = null;
 
 	ArrayList<String> menuList = null;
 	ListView list_menulist = null;
@@ -42,26 +38,27 @@ public class A05_00_Setting extends TabActivity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		layout = new L05_00_SettingLayout();
-		setContentView(layout.getLayout(context, display));
+		settinglayout = new L05_00_SettingLayout();
+		layout.b00_00_linear_content.addView(settinglayout.getLayout(context, display));
 
 		bFriend = true;
 		bFindLink = true;
 		bTalkRoomList = true;
 		bSetting = false;
+		
+		tab_Setting.setBackgroundResource(R.drawable.main_topbar_menu_04_on);
 
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 
-		tab_Setting.setBackgroundResource(R.drawable.main_topbar_menu_04_on);
 
 		ListView list_content = layout.b00_00_list_content;
 		LinearLayout linear = layout.linear;
 		linear.removeView(list_content);
 
-		btn_profile = layout.l05_00_btn_profile;
-		btn_alarm = layout.l05_00_btn_alarm;
-		btn_qna = layout.l05_00_btn_qna;
-		btn_pay = layout.l05_00_btn_pay;
+		btn_profile = settinglayout.l05_00_btn_profile;
+		btn_alarm = settinglayout.l05_00_btn_alarm;
+		btn_qna = settinglayout.l05_00_btn_qna;
+		btn_pay = settinglayout.l05_00_btn_pay;
 
 		btn_profile.setOnClickListener(onClick);
 		btn_alarm.setOnClickListener(onClick);
@@ -91,7 +88,6 @@ public class A05_00_Setting extends TabActivity {
 			}else if (v == btn_pay) {
 				Intent intent = new Intent(getBaseContext(), A05_04_Payment.class);
 				startActivity(intent);
-				finish();
 			}
 		}
 	};

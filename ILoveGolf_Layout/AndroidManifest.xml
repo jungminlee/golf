@@ -11,12 +11,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission
+        android:name="com.ilovegolf.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="com.ilovegolf.permission.MAPS_RECEIVE" />
     <!-- GCM messages 수신하기 위해서 -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <!-- 인터넷 접속 -->
@@ -58,12 +64,11 @@
                 <category android:name="com.ilovegolf" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".BillingReceiver">
-            <intent-filter >
-                <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
-                <action android:name="com.android.vending.billing.RESPONSE_CODE"/>
-                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
+        <receiver android:name=".BillingReceiver" >
+            <intent-filter>
+                <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
+                <action android:name="com.android.vending.billing.RESPONSE_CODE" />
+                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -105,6 +110,9 @@
             android:name="com.ilovegolf.A03_00_FindLink"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
+
+        <uses-library android:name="com.google.android.maps" />
+
         <activity
             android:name="com.ilovegolf.A03_01_MapView"
             android:screenOrientation="portrait"

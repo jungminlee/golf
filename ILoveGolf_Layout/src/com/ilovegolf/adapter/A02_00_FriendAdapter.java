@@ -1,8 +1,6 @@
 package com.ilovegolf.adapter;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Activity;
@@ -13,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Message;
-import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -21,13 +18,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.internal.v;
 import com.ilovegolf.A02_01_SelectAddress;
 import com.ilovegolf.R;
 import com.ilovegolf.T00_01_ImageRecvThread;
@@ -36,7 +30,6 @@ import com.ilovegolf.layout.I02_00_NeighborTitleItem;
 import com.ilovegolf.layout.I02_00_PeopleItem;
 import com.ilovegolf.struct.DownImage;
 import com.ilovegolf.struct.Friend;
-import com.ilovegolf.util.SocketIO;
 import com.ilovegolf.util.StaticClass;
 
 public class A02_00_FriendAdapter extends BaseAdapter {
