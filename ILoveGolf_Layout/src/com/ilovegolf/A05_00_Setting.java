@@ -1,6 +1,6 @@
 package com.ilovegolf;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
