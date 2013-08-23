@@ -38,12 +38,15 @@ public class A04_00_ChatRoomAdapter extends BaseAdapter {
 	Friend friend = null;
 
 	String myid = "";
+	
+	SharedPreferences sp = null;
 
-	public A04_00_ChatRoomAdapter(Context context, Display display, ArrayList<ChatRoom> chatroomList, String myid) {
+	public A04_00_ChatRoomAdapter(Context context, Display display, ArrayList<ChatRoom> chatroomList, String myid, SharedPreferences sp) {
 		this.context = context;
 		this.display = display;
 		this.chatroomList = chatroomList;
 		this.myid = myid;
+		this.sp = sp;
 	}
 
 	@Override
@@ -88,7 +91,7 @@ public class A04_00_ChatRoomAdapter extends BaseAdapter {
 		btn_state.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				int id=(Integer) v.getTag();
+				int id = (Integer) v.getTag();
 				chatroom = chatroomList.get(id);
 				friend = StaticClass.dbm.selectFriendDB(chatroom.strRoomID);
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -112,7 +115,7 @@ public class A04_00_ChatRoomAdapter extends BaseAdapter {
 		btn_state.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				int id=(Integer) v.getTag();
+				int id = (Integer) v.getTag();
 				chatroom = chatroomList.get(id);
 				friend = StaticClass.dbm.selectFriendDB(chatroom.strRoomID);
 				if (friend.iIsFlag == 2) {
@@ -123,8 +126,16 @@ public class A04_00_ChatRoomAdapter extends BaseAdapter {
 					try {
 						if (!StaticClass.DataSoc.isConnected())
 							StaticClass.DataSoc = new SocketIO(StaticClass.IP, StaticClass.PORT);
-
-						String send = "BEGIN ACCEPTREQUEST\r\n";
+						
+						String send = "BEGIN CREATECHATROOM\r\n";
+						send += "Sender_ID:" + sp.getString("myID", "") + "\r\n";
+						send += "Sender_Name:" + sp.getString("myName", "") + "\r\n";
+						send += "Sender_Image:" + sp.getString("myImage", "") + "\r\n";
+						send += "Recver_ID:" + friend.strID + "\r\n";
+						send += "END\r\n";
+						
+						
+						send = "BEGIN ACCEPTREQUEST\r\n";
 						send += "Sender_ID:" + myid + "\r\n";
 						send += "Recver_ID:" + chatroom.strRoomID + "\r\n";
 						send += "END\r\n";
@@ -137,15 +148,14 @@ public class A04_00_ChatRoomAdapter extends BaseAdapter {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (Exception e) {
-						
+
 					}
-					
-				}else if(friend.iIsFlag==3) {
+
+				} else if (friend.iIsFlag == 3) {
 					Intent intent = new Intent(context.getApplicationContext(), A04_00_RecvMessageList.class);
 					intent.putExtra("id", chatroom.strRoomID);
 					context.startActivity(intent);
 					((Activity) context).finish();
-					
 
 					Message hanMessage = new Message();
 					hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;

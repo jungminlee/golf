@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager.BadTokenException;
 import android.widget.ListView;
 
 import com.android.vending.billing.IInAppBillingService;
@@ -87,57 +88,57 @@ public class A05_04_Payment extends BaseActivity {
 			Long acount_year = sp.getLong("AcountYear", 0);
 			Long acount_month = sp.getLong("AcountMonth", 0);
 			Long acount_day = sp.getLong("AcountDay", 0);
-			System.out.println("today_year:"+today_year+"///today_month:"+today_month+"///acount_year:"+acount_year+"///acount_month:"+acount_month+"///acount_day:"+acount_day);
-			
+			System.out.println("today_year:" + today_year + "///today_month:" + today_month + "///acount_year:" + acount_year + "///acount_month:" + acount_month + "///acount_day:" + acount_day);
+
 		}
-//			if (today_year - acount_year > 1) {
-//				if (today_month - acount_month > 1) {
-//					int cnt = (int) ((today_year - acount_year) * 10 + (today_month - acount_month));
-//					for (int i = 0; i < cnt; i++) {
-//						acount_month++;
-//						if (acount_month > 12) {
-//							acount_year++;
-//							acount_month -= 12;
-//						}
-//						String s = "[" + acount_year + "." + acount_month + "." + acount_day + "] 9500원 결제";
-//						StaticClass.dbm.insertPaymentDB(s);
-//					}
-//				} else {
-//					int cnt = (int) ((today_year - acount_year) * 10);
-//					for (int i = 0; i < cnt; i++) {
-//						acount_month++;
-//						if (acount_month > 12) {
-//							acount_year++;
-//							acount_month -= 12;
-//						}
-//						String s = "[" + acount_year + "." + acount_month + "." + acount_day + "] 9500원 결제";
-//						StaticClass.dbm.insertPaymentDB(s);
-//					}
-//				}
-//			} else {
-//				if (today_month - acount_month > 1) {
-//					int cnt = (int) ((today_month - acount_month));
-//					for (int i = 0; i < cnt; i++) {
-//						acount_month++;
-//						if (acount_month > 12) {
-//							acount_month -= 12;
-//						}
-//						String s = "[" + acount_year + "." + acount_month + "." + acount_day + "] 9500원 결제";
-//						StaticClass.dbm.insertPaymentDB(s);
-//					}
-//				}
-//			}
-//
-//			synchronized (StaticClass.dbm) {
-//				paymentList.clear();
-//				StaticClass.dbm.selectPaymentDB(paymentList);
-//			}
-//			paymentlistAdapter.notifyDataSetChanged();
-//
-//			edit.putLong("AcountYear", acount_year);
-//			edit.putLong("AcountMonth", acount_month);
-//			edit.commit();
-//		}
+		// if (today_year - acount_year > 1) {
+		// if (today_month - acount_month > 1) {
+		// int cnt = (int) ((today_year - acount_year) * 10 + (today_month - acount_month));
+		// for (int i = 0; i < cnt; i++) {
+		// acount_month++;
+		// if (acount_month > 12) {
+		// acount_year++;
+		// acount_month -= 12;
+		// }
+		// String s = "[" + acount_year + "." + acount_month + "." + acount_day + "] 9500원 결제";
+		// StaticClass.dbm.insertPaymentDB(s);
+		// }
+		// } else {
+		// int cnt = (int) ((today_year - acount_year) * 10);
+		// for (int i = 0; i < cnt; i++) {
+		// acount_month++;
+		// if (acount_month > 12) {
+		// acount_year++;
+		// acount_month -= 12;
+		// }
+		// String s = "[" + acount_year + "." + acount_month + "." + acount_day + "] 9500원 결제";
+		// StaticClass.dbm.insertPaymentDB(s);
+		// }
+		// }
+		// } else {
+		// if (today_month - acount_month > 1) {
+		// int cnt = (int) ((today_month - acount_month));
+		// for (int i = 0; i < cnt; i++) {
+		// acount_month++;
+		// if (acount_month > 12) {
+		// acount_month -= 12;
+		// }
+		// String s = "[" + acount_year + "." + acount_month + "." + acount_day + "] 9500원 결제";
+		// StaticClass.dbm.insertPaymentDB(s);
+		// }
+		// }
+		// }
+		//
+		// synchronized (StaticClass.dbm) {
+		// paymentList.clear();
+		// StaticClass.dbm.selectPaymentDB(paymentList);
+		// }
+		// paymentlistAdapter.notifyDataSetChanged();
+		//
+		// edit.putLong("AcountYear", acount_year);
+		// edit.putLong("AcountMonth", acount_month);
+		// edit.commit();
+		// }
 
 		paymentList = new ArrayList<String>();
 		synchronized (StaticClass.dbm) {
@@ -147,7 +148,7 @@ public class A05_04_Payment extends BaseActivity {
 		paymentlistAdapter = new A05_04_PaymentAdapter(context, display, paymentList);
 		list_payment.setAdapter(paymentlistAdapter);
 		list_payment.setSelector(new ColorDrawable(Color.alpha(0)));
-		
+
 		mHelper = new IabHelper(context, base64EncodedPublicKey);
 
 		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
@@ -160,44 +161,7 @@ public class A05_04_Payment extends BaseActivity {
 
 			}
 		});
-		
-		View btn_pay = layout.l05_04_btn_pay;
-		btn_pay.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String payload = "";
-				if (!pay) {
-					mHelper.launchPurchaseFlow((Activity) context, SKU_GOLF, 1001, mPurchaseFinishedListener, payload);
-				} else {
-					StaticClass.alert = new AlertDialog.Builder(context).create();
-					StaticClass.alert.setTitle("아이러브골프");
-					StaticClass.alert.setMessage("이미 결제 하셨습니다.");
-					StaticClass.alert.setButton(AlertDialog.BUTTON_NEUTRAL, "확인", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent intent = new Intent(getBaseContext(), A05_00_Setting.class);
-							startActivity(intent);
-							overridePendingTransition(0, 0);
-							finish();
-						}
-					});
-					StaticClass.alert.show();
-				}
 
-			}
-		});
-
-		btn_pay.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					v.setBackgroundResource(R.drawable.btn_payment_on);
-				} else if (event.getAction() == MotionEvent.ACTION_UP) {
-					v.setBackgroundResource(R.drawable.btn_payment_off);
-				}
-				return false;
-			}
-		});
 	}
 
 	IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
@@ -220,54 +184,88 @@ public class A05_04_Payment extends BaseActivity {
 
 	IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-			if (result.isFailure()) {
-				return;
-			}
-			
-			Purchase premiumPurchase = inventory.getPurchase(SKU_GOLF);
-			Log.e("!@$!WAF@#", "ASDFASDFASDF");
-			if (premiumPurchase != null) {
-				Log.e("!@$!WAF@#", premiumPurchase.getPurchaseState() + "");
-				if (premiumPurchase.getPurchaseState() == 0) {
-				} else if (premiumPurchase.getPurchaseState() == 2) {
-					// 마지막 결제내역 삭제
-					Log.e("!@$!WAF@#", "결제내역삭제");
-					pay = false;
-					edit.putInt("myIsAcount", 0);
-					edit.commit();
+			try {
+				if (result.isFailure()) {
+					return;
+				}
 
-					Long acount_year = sp.getLong("AcountYear", 0);
-					Long acount_month = sp.getLong("AcountMonth", 0);
-					Long acount_day = sp.getLong("AcountDay", 0);
+				Purchase premiumPurchase = inventory.getPurchase(SKU_GOLF);
+				Log.e("!@$!WAF@#", "ASDFASDFASDF");
+				if (premiumPurchase != null) {
+					Log.e("!@$!WAF@#", premiumPurchase.getPurchaseState() + "");
+					if (premiumPurchase.getPurchaseState() == 0) {
 
-					synchronized (StaticClass.dbm) {
-						StaticClass.dbm.insertPaymentDB("[" + acount_year + "." + acount_month + "." + acount_day + "] 환불");
-						paymentList.clear();
-						StaticClass.dbm.selectPaymentDB(paymentList);
+						String payload = "";
+						if (!pay) {
+							mHelper.launchPurchaseFlow((Activity) context, SKU_GOLF, 1001, mPurchaseFinishedListener, payload);
+						} else {
+							StaticClass.alert = new AlertDialog.Builder(context).create();
+							StaticClass.alert.setTitle("아이러브골프");
+							StaticClass.alert.setMessage("이미 결제 하셨습니다.");
+							StaticClass.alert.setButton(AlertDialog.BUTTON_NEUTRAL, "확인", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+								}
+							});
+							StaticClass.alert.show();
+						}
+					} else if (premiumPurchase.getPurchaseState() == 2) {
+						// 마지막 결제내역 삭제
+						Log.e("!@$!WAF@#", "결제내역삭제");
+						pay = false;
+						edit.putInt("myIsAcount", 0);
+						edit.commit();
+
+						Long acount_year = sp.getLong("AcountYear", 0);
+						Long acount_month = sp.getLong("AcountMonth", 0);
+						Long acount_day = sp.getLong("AcountDay", 0);
+
+						synchronized (StaticClass.dbm) {
+							StaticClass.dbm.insertPaymentDB("[" + acount_year + "." + acount_month + "." + acount_day + "] 환불");
+							paymentList.clear();
+							StaticClass.dbm.selectPaymentDB(paymentList);
+						}
+						paymentlistAdapter.notifyDataSetChanged();
+
+						try {
+							if (!StaticClass.DataSoc.isConnected())
+								StaticClass.DataSoc = new SocketIO(StaticClass.IP, StaticClass.PORT);
+
+							String send = "BEGIN UPDATEMEMBERACOUNT\r\n";
+							send += "Member_ID:" + sp.getString("myID", "") + "\r\n";
+							send += "Member_isAcount:0\r\n";
+							send += "END\r\n";
+							StaticClass.DataSoc.sendMessage(send);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Exception e) {
+							Log.e("error", e.getMessage() + "");
+
+						}
 					}
-					paymentlistAdapter.notifyDataSetChanged();
-
-					try {
-						if (!StaticClass.DataSoc.isConnected())
-							StaticClass.DataSoc = new SocketIO(StaticClass.IP, StaticClass.PORT);
-
-						String send = "BEGIN UPDATEMEMBERACOUNT\r\n";
-						send += "Member_ID:" + sp.getString("myID", "") + "\r\n";
-						send += "Member_isAcount:0\r\n";
-						send += "END\r\n";
-						StaticClass.DataSoc.sendMessage(send);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (Exception e) {
-						Log.e("error", e.getMessage() + "");
-
+				} else {
+					String payload = "";
+					if (!pay) {
+						mHelper.launchPurchaseFlow((Activity) context, SKU_GOLF, 1001, mPurchaseFinishedListener, payload);
+					} else {
+						StaticClass.alert = new AlertDialog.Builder(context).create();
+						StaticClass.alert.setTitle("아이러브골프");
+						StaticClass.alert.setMessage("이미 결제 하셨습니다.");
+						StaticClass.alert.setButton(AlertDialog.BUTTON_NEUTRAL, "확인", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+							}
+						});
+						StaticClass.alert.show();
 					}
 				}
+			} catch (BadTokenException e) {
+				finish();
 			}
 		}
 	};
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -277,14 +275,14 @@ public class A05_04_Payment extends BaseActivity {
 			if (requestCode == 1001) {
 				if (resultCode == RESULT_OK) {
 					Date date = new Date();
-					
+
 					pay = true;
 					edit.putInt("myIsAcount", 1);
 					edit.putLong("AcountYear", Long.parseLong(format1.format(date)));
 					edit.putLong("AcountMonth", Long.parseLong(format2.format(date)));
 					edit.putLong("AcountDay", Long.parseLong(format3.format(date)));
 					edit.commit();
-					
+
 					synchronized (StaticClass.dbm) {
 						StaticClass.dbm.insertPaymentDB("[" + format1.format(date) + "." + format2.format(date) + "." + format3.format(date) + "] 9500원 결제");
 						StaticClass.dbm.selectPaymentDB(paymentList);
@@ -328,6 +326,5 @@ public class A05_04_Payment extends BaseActivity {
 		}
 		return true;
 	}
-	
-	
+
 }

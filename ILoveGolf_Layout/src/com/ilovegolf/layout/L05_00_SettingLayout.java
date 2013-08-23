@@ -17,6 +17,7 @@ public class L05_00_SettingLayout extends B00_01_BarLayout {
 	public TextView l05_00_btn_alarm = null;
 	public TextView l05_00_btn_qna = null;
 	public TextView l05_00_btn_pay = null;
+	public TextView l05_00_btn_notice = null;
 
 	public View getLayout(Context context, Display display) {
 		super.getLayout(context, display);
@@ -55,7 +56,7 @@ public class L05_00_SettingLayout extends B00_01_BarLayout {
 		l05_00_btn_qna.setTextColor(Color.BLACK);
 		l05_00_btn_qna.setPadding(paddingWidth, 0, 0, 0);
 		l05_00_btn_qna.setBackgroundResource(R.drawable.golf_setup_qna_line);
-		l05_00_btn_qna.setText("문의하기");
+		l05_00_btn_qna.setText("문의 하기");
 		b00_01_linear_content.addView(l05_00_btn_qna);
 
 		l05_00_btn_pay = new TextView(context);
@@ -67,6 +68,15 @@ public class L05_00_SettingLayout extends B00_01_BarLayout {
 		l05_00_btn_pay.setText("결제 내역");
 		b00_01_linear_content.addView(l05_00_btn_pay);
 
+		l05_00_btn_notice = new TextView(context);
+		l05_00_btn_notice.setLayoutParams(params);
+		l05_00_btn_notice.setGravity(Gravity.CENTER_VERTICAL);
+		l05_00_btn_notice.setTextColor(Color.BLACK);
+		l05_00_btn_notice.setPadding(paddingWidth, 0, 0, 0);
+		l05_00_btn_notice.setBackgroundResource(R.drawable.golf_setup_info_line_off);
+		l05_00_btn_notice.setText("이용 안내");
+		b00_01_linear_content.addView(l05_00_btn_notice);
+		
 		return b00_01_barlayout;
 	}
 }

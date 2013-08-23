@@ -17,6 +17,8 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +26,7 @@ import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ilovegolf.adapter.A04_00_RecvMessageAdapter;
@@ -121,7 +124,16 @@ public class A04_00_RecvMessageList extends BarActivity {
 						if (StaticClass.DataSoc == null || !StaticClass.DataSoc.isConnected() || StaticClass.DataSoc.isClosed()) {
 							StaticClass.DataSoc = new SocketIO(StaticClass.IP, StaticClass.PORT);
 						}
-						String send = "BEGIN SENDMESSAGE\r\n";
+						
+						String send = "BEGIN CREATECHATROOM\r\n";
+						send += "Sender_ID:" + sp.getString("myID", "") + "\r\n";
+						send += "Sender_Name:" + sp.getString("myName", "") + "\r\n";
+						send += "Sender_Image:" + sp.getString("myImage", "") + "\r\n";
+						send += "Recver_ID:" + friend.strID + "\r\n";
+						send += "END\r\n";
+						
+						
+						send = "BEGIN SENDMESSAGE\r\n";
 						send += "Sender_ID:" + sp.getString("myID", "") + "\r\n";
 						send += "Sender_Name:" + sp.getString("myName", "") + "\r\n";
 						send += "Sender_Image:" + sp.getString("myImage", "") + "\r\n";
@@ -178,6 +190,8 @@ public class A04_00_RecvMessageList extends BarActivity {
 		});
 	}
 
+     
+
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == event.KEYCODE_BACK) {
 			StaticClass.chatmember = "";
@@ -185,7 +199,28 @@ public class A04_00_RecvMessageList extends BarActivity {
 			context.startActivity(intent);
 			overridePendingTransition(0, 0);
 			finish();
+			return true;
 		}
-		return true;
+		return false;
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+        menu.add(0,1,0,"차단하기");
+        return true;
+    }
+     
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+		case 1:
+			synchronized (StaticClass.dbm) {
+				StaticClass.dbm.updateFriendBlack(id);
+				System.out.println("차단 되었습니다");
+			}
+			return true;
+		}
+        return false;
+    }
 }

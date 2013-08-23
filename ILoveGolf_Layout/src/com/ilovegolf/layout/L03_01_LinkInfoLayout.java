@@ -54,24 +54,24 @@ public class L03_01_LinkInfoLayout {
 			relative.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, tempHeight));
 			l03_01_layout_linkinfo.addView(relative);
 			{
-				LinearLayout base = new LinearLayout(context);
-				base.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-				relative.addView(base);
-				{
-					paddingleft = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 14 * (float) viewHight) / (float) 800));
-					tempWidth = ((int) (((float) 111 * (float) viewWidth) / (float) 480));
-					tempHeight = ((int) (((float) 111 * (float) viewHight) / (float) 800));
-					l03_01_img_pic = new ImageView(context);
-					LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(new LayoutParams(tempWidth, tempHeight));
-					param.setMargins(paddingleft, paddingtop, 0, 0);
-					l03_01_img_pic.setLayoutParams(param);
-					l03_01_img_pic.setBackgroundResource(R.drawable.golf_position_profile_img);
-					base.addView(l03_01_img_pic);
-				}
+//				LinearLayout base = new LinearLayout(context);
+//				base.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+//				relative.addView(base);
+//				{
+//					paddingleft = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
+//					paddingtop = ((int) (((float) 14 * (float) viewHight) / (float) 800));
+//					tempWidth = ((int) (((float) 111 * (float) viewWidth) / (float) 480));
+//					tempHeight = ((int) (((float) 111 * (float) viewHight) / (float) 800));
+//					l03_01_img_pic = new ImageView(context);
+//					LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(new LayoutParams(tempWidth, tempHeight));
+//					param.setMargins(paddingleft, paddingtop, 0, 0);
+//					l03_01_img_pic.setLayoutParams(param);
+//					l03_01_img_pic.setBackgroundResource(R.drawable.golf_position_profile_img);
+//					base.addView(l03_01_img_pic);
+//				}
 				LinearLayout linear = new LinearLayout(context);
 				linear.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-				linear.setBackgroundResource(R.drawable.profile_bg);
+				linear.setBackgroundResource(R.drawable.position_profile_bg);
 				linear.setOrientation(LinearLayout.VERTICAL);
 				relative.addView(linear);
 
@@ -82,7 +82,7 @@ public class L03_01_LinkInfoLayout {
 					linear.addView(linear2);
 					{
 
-						paddingleft = ((int) (((float) 165 * (float) viewWidth) / (float) 480));
+						paddingleft = ((int) (((float) 40 * (float) viewWidth) / (float) 480));
 						paddingtop = ((int) (((float) 29 * (float) viewHight) / (float) 800));
 						l03_01_text_name = new TextView(context);
 						LinearLayout.LayoutParams param3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
@@ -111,10 +111,10 @@ public class L03_01_LinkInfoLayout {
 						l03_01_btn_close.setBackgroundResource(R.drawable.btn_profile_close_off);
 						linear2.addView(l03_01_btn_close);
 					}
-					paddingleft = ((int) (((float) 165 * (float) viewWidth) / (float) 480));
+					paddingleft = ((int) (((float) 40 * (float) viewWidth) / (float) 480));
 					paddingtop = ((int) (((float) 5 * (float) viewHight) / (float) 800));
 					paddingright = ((int) (((float) 42 * (float) viewWidth) / (float) 480));
-					tempHeight = ((int) (((float) 35 * (float) viewHight) / (float) 800));
+					tempHeight = ((int) (((float) 45 * (float) viewHight) / (float) 800));
 					l03_01_text_address = new TextView(context);
 					LinearLayout.LayoutParams param6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 					param6.setMargins(paddingleft, paddingtop, paddingright, 0);
@@ -122,20 +122,20 @@ public class L03_01_LinkInfoLayout {
 					l03_01_text_address.setTextColor(Color.WHITE);
 					l03_01_text_address.setText("서울시 구로구 구로3동 170-10호\n대륭 포스트타워 7차 509호");
 					// l03_01_text_address.setMaxLines(1);
-					l03_01_text_address.setTextSize(13);
 					linear.addView(l03_01_text_address);
 
-					paddingleft = ((int) (((float) 168 * (float) viewWidth) / (float) 480));
+					paddingleft = ((int) (((float) 40 * (float) viewWidth) / (float) 480));
 					paddingtop = ((int) (((float) 5 * (float) viewHight) / (float) 800));
 					paddingright = ((int) (((float) 44 * (float) viewWidth) / (float) 480));
 					paddingbottom = ((int) (((float) 5 * (float) viewHight) / (float) 800));
-					tempHeight = ((int) (((float) 35 * (float) viewHight) / (float) 800));
+					tempHeight = ((int) (((float) 25 * (float) viewHight) / (float) 800));
 					l03_01_text_msg = new TextView(context);
 					param6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 					param6.setMargins(paddingleft, paddingtop, paddingright, paddingbottom);
 					l03_01_text_msg.setLayoutParams(param6);
 					l03_01_text_msg.setTextColor(Color.WHITE);
 					l03_01_text_msg.setGravity(Gravity.CENTER_VERTICAL);
+					l03_01_text_msg.setMaxLines(1);
 					l03_01_text_msg.setTextSize(13);
 					linear.addView(l03_01_text_msg);
 

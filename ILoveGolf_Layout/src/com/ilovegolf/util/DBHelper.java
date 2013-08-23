@@ -19,6 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	String friend_address_dong="friend_address_dong";
 	String friend_isfavorite = "friend_isfavorite";
 	String friend_isflag = "friend_isflag";
+	String friend_isblack = "friend_isblack";
 
 	String table_link = "link";
 	String link_id = "link_id";
@@ -64,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("create table friend(" + friend_id + " text primary key, " + friend_name + " text, " + friend_phone + " text, " + friend_image + " text, " + friend_message + " text, " + friend_sex + " text, " + friend_grade + " text, "+friend_address_si+" text, "+friend_address_gu+" text, "+friend_address_dong+" text," + friend_isfavorite + " integer, " + friend_isflag + " integer);");
+		db.execSQL("create table friend(" + friend_id + " text primary key, " + friend_name + " text, " + friend_phone + " text, " + friend_image + " text, " + friend_message + " text, " + friend_sex + " text, " + friend_grade + " text, "+friend_address_si+" text, "+friend_address_gu+" text, "+friend_address_dong+" text," + friend_isfavorite + " integer, " + friend_isflag + " integer, "+friend_isblack+" integer);");
 		db.execSQL("create table link(" + link_id + " text primary key, " + link_name + " text, " + link_tel + " text, "+link_x+" text, " + link_y + " text, "+link_address_si+" text, "+link_address_gu+" text, "+link_address_dong+" text, "+link_address_text+" text, "+link_parking+" text, "+link_system+" text, " + link_isfavorite + " integer, " + link_isflag + " integer);");
 		db.execSQL("create table message(_id integer primary key autoincrement, " + message_peopleid + " text, " + message_peoplename + " text, " + message_msg + " text, " + message_date + " text, " + message_code + " int);");
 		db.execSQL("create table chatroom(" + chatroom_roomid + " text primary key, " + chatroom_roomname + " text, " + chatroom_updatedate + " text, " + chatroom_updatemessage + " text);");

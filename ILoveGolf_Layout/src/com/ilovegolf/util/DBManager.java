@@ -34,6 +34,7 @@ public class DBManager {
 	String friend_address_dong = "friend_address_dong";
 	String friend_isfavorite = "friend_isfavorite";
 	String friend_isflag = "friend_isflag";
+	String friend_isblack = "friend_isblack";
 
 	String table_link = "link";
 	String link_id = "link_id";
@@ -76,18 +77,20 @@ public class DBManager {
 	Cursor addressCursor = null;
 	Cursor paymentCursor = null;
 
-	String table_payment="payment";
-	String payment_date="payment_date";
-	
+	String table_payment = "payment";
+	String payment_date = "payment_date";
+
 	public DBManager(Context context) {
 		this.context = context;
 		dbhepler = new DBHelper(this.context);
 		db = dbhepler.getWritableDatabase();
 	}
+
 	public void paymentCursorCheck() {
 		if (paymentCursor instanceof Cursor)
 			paymentCursor.close();
 	}
+
 	public void addressCursorCheck() {
 		if (addressCursor instanceof Cursor)
 			addressCursor.close();
@@ -107,8 +110,6 @@ public class DBManager {
 		if (linkCursor instanceof Cursor)
 			linkCursor.close();
 	}
-	
-
 
 	public void messageCursorCheck() {
 		if (linkCursor instanceof Cursor)
@@ -124,9 +125,9 @@ public class DBManager {
 	}
 
 	public void insertPaymentDB(String date) {
-		db.execSQL("insert into "+table_payment+"("+payment_date+") values('"+date+"');");
+		db.execSQL("insert into " + table_payment + "(" + payment_date + ") values('" + date + "');");
 	}
-	
+
 	public void insertAddressDB(String si) {
 		db.execSQL("insert into " + table_address + " values('" + si + "', null, null)");
 	}
@@ -151,13 +152,13 @@ public class DBManager {
 		db.execSQL("delete from " + table_message + " where _id=" + iMessageID + "");
 	}
 
-//	public void deleteAddress(int flag, InputAddress add) {
-//		if (flag == 1) {
-//			db.execSQL("delete from " + table_address + " where " + address_si + "='" + add.strAddress_si + "' and " + address_gu + " is NULL and " + address_dong + " is NULL");
-//		} else if (flag == 2) {
-//			db.execSQL("delete from " + table_address + " where " + address_si + "='" + add.strAddress_si + "' and " + address_gu + " ='" + add.strAddress_gu + "' " + address_dong + " is NULL");
-//		}
-//	}
+	// public void deleteAddress(int flag, InputAddress add) {
+	// if (flag == 1) {
+	// db.execSQL("delete from " + table_address + " where " + address_si + "='" + add.strAddress_si + "' and " + address_gu + " is NULL and " + address_dong + " is NULL");
+	// } else if (flag == 2) {
+	// db.execSQL("delete from " + table_address + " where " + address_si + "='" + add.strAddress_si + "' and " + address_gu + " ='" + add.strAddress_gu + "' " + address_dong + " is NULL");
+	// }
+	// }
 
 	public void deleteMessageDB_ALL(String sender) {
 		db.execSQL("delete from " + table_message + " where " + message_peopleid + "='" + sender + "'");
@@ -170,19 +171,23 @@ public class DBManager {
 	public void updateChatRoomDB(ChatRoom chatroom) {
 		db.execSQL("update chatroom set " + chatroom_updatedate + "='" + chatroom.strUpdateDate + "', " + chatroom_updatemessage + "='" + chatroom.strUpdateMessage + "' where " + chatroom_roomid + "='" + chatroom.strRoomID + "'");
 	}
-	
+
 	public void updateMessageDB(RecvMessage message) {
 		db.execSQL("update message set " + message_msg + "='" + message.strContent + "', " + message_code + "=" + message.iCode + " where _id=" + message.iMessageID + "");
 	}
 
 	public void insertFriendDB(Friend friend) {
-		db.execSQL("insert into friend values('" + friend.strID + "', '" + friend.strName + "', '" + friend.strPhone + "', '" + friend.strImage + "', '" + friend.strMessage + "', '" + friend.strSex + "', '" + friend.strGrade + "','" + friend.strAddressSi + "' ,'" + friend.strAddressGu + "' ,'" + friend.strAddressDong + "' ," + friend.iIsFavorite + ", " + friend.iIsFlag + ");");
+		db.execSQL("insert into friend values('" + friend.strID + "', '" + friend.strName + "', '" + friend.strPhone + "', '" + friend.strImage + "', '" + friend.strMessage + "', '" + friend.strSex + "', '" + friend.strGrade + "','" + friend.strAddressSi + "' ,'" + friend.strAddressGu + "' ,'" + friend.strAddressDong + "' ," + friend.iIsFavorite + ", " + friend.iIsFlag + ", "+friend.iIsBlack+");");
 	}
 
 	public void insertLinkDB(Link link) {
-		db.execSQL("insert into link values('" + link.strID + "', '" + link.strName + "', '" + link.strTel + "', '" + link.strlink_x + "', '" + link.strlink_y + "', '" + link.strAddress_si + "', '" + link.strAddress_gu + "', '" + link.strAddress_dong + "', '" + link.strAddress_text + "', '"+link.strlink_parking+"', '"+link.strlink_system+"', " + link.iIsFavorite + ", " + link.iIsFlag + ");");
+		db.execSQL("insert into link values('" + link.strID + "', '" + link.strName + "', '" + link.strTel + "', '" + link.strlink_x + "', '" + link.strlink_y + "', '" + link.strAddress_si + "', '" + link.strAddress_gu + "', '" + link.strAddress_dong + "', '" + link.strAddress_text + "', '" + link.strlink_parking + "', '" + link.strlink_system + "', " + link.iIsFavorite + ", " + link.iIsFlag + ");");
 	}
 
+	public void updateFriendBlack(String id){
+		db.execSQL("update friend set "+friend_isblack+"=1 where "+friend_id+"='"+id+"'");
+	}
+ 	
 	public void updateLinkDB(Link link) {
 		System.out.println("update link set " + link_isfavorite + "=" + link.iIsFavorite + ", link_isflag=" + link.iIsFlag + ", " + link_address_si + "='" + link.strAddress_si + "', " + link_address_gu + "='" + link.strAddress_gu + "', " + link_address_dong + "='" + link.strAddress_dong + "', " + link_address_text + "='" + link.strAddress_text + "' where " + link_id + "='" + link.strID + "';");
 		db.execSQL("update link set " + link_isfavorite + "=" + link.iIsFavorite + ", link_isflag=" + link.iIsFlag + ", " + link_address_si + "='" + link.strAddress_si + "', " + link_address_gu + "='" + link.strAddress_gu + "', " + link_address_dong + "='" + link.strAddress_dong + "', " + link_address_text + "='" + link.strAddress_text + "' where " + link_id + "='" + link.strID + "';");
@@ -192,16 +197,32 @@ public class DBManager {
 		db.execSQL("update friend set " + friend_address_si + "='" + friend.strAddressSi + "'," + friend_address_gu + "='" + friend.strAddressGu + "'," + friend_address_dong + "='" + friend.strAddressDong + "' ," + friend_isfavorite + "=" + friend.iIsFavorite + ", friend_isflag=" + friend.iIsFlag + ", " + friend_image + "='" + friend.strImage + "', " + friend_message + "='" + friend.strMessage + "', " + friend_name + "='" + friend.strName + "', " + friend_sex + "='" + friend.strSex + "', " + friend_grade + "='" + friend.strGrade + "' where " + friend_id + "='" + friend.strID + "';");
 	}
 
-	
 	public void selectPaymentDB(ArrayList<String> payList) {
 		paymentCursorCheck();
-		
-		paymentCursor=db.rawQuery("select * from "+table_payment, null);
-		while(paymentCursor.moveToNext()) {
-			String pay=paymentCursor.getString(1);
+
+		paymentCursor = db.rawQuery("select * from " + table_payment, null);
+		while (paymentCursor.moveToNext()) {
+			String pay = paymentCursor.getString(1);
 			payList.add(pay);
 		}
 		paymentCursor.close();
+	}
+
+	
+	public boolean selectFriendBlackDB(String id) {
+		friendCursorCheck();
+		friendCursor=db.rawQuery("select "+friend_isblack+" from "+table_friend+" where "+friend_id+"='"+id+"';", null);
+
+		System.out.println("차단했니안했니왜안했니난했는데"+friendCursor.getInt(0));
+		while(friendCursor.moveToNext()) {
+			if(friendCursor.getInt(0)==1) {
+				System.out.println("블랙리스트");
+				return true;
+			}
+			else 
+				return false;
+		}
+		return false;
 	}
 	public void selectAddressDB(ArrayList<String> addressList, int flag, InputAddress add) {
 		String address = "";
@@ -227,17 +248,17 @@ public class DBManager {
 
 		addressCursorCheck();
 		if (flag == 2) {
-			addressCursor = db.rawQuery("select * from address where " + address_si + "!='null' and " + address_si + "='" + add.strAddress_si + "'", null);
+			addressCursor = db.rawQuery("select distinct * from address where " + address_si + "='" + add.strAddress_si + "';", null);
 			System.out.println(addressCursor.getCount() + ":+:+:+:+:+:+:true");
 			if (addressCursor.getCount() > 1) {
-//				StaticClass.dbm.deleteAddress(1, add);
+				// StaticClass.dbm.deleteAddress(1, add);
 				return true;
 			}
 		} else if (flag == 3) {
-			addressCursor = db.rawQuery("select  " + address_dong + " from address where " + address_si + "='" + add.strAddress_si + "' and " + address_gu + "='" + add.strAddress_gu + "' and " + address_dong + " is not null", null);
+			addressCursor = db.rawQuery("select distinct * from address where " + address_si + "='" + add.strAddress_si + "' and " + address_gu + "='" + add.strAddress_gu + "';", null);
 			System.out.println(addressCursor.getCount() + ":+:+:+:+:+:+:true");
-			if (1 < addressCursor.getCount()){
-//				StaticClass.dbm.deleteAddress(2, add);
+			if (addressCursor.getCount() > 1) {
+				// StaticClass.dbm.deleteAddress(2, add);
 				return true;
 			}
 		}
@@ -283,6 +304,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
+			friend.iIsBlack=friendCursor.getInt(12);
 			idList.offer(friend);
 		}
 		friendCursor.close();
@@ -292,7 +314,7 @@ public class DBManager {
 		ChatRoom chatroom;
 
 		chatroomCursorCheck();
-		chatroomCursor = db.rawQuery("select * from chatroom", null);
+		chatroomCursor = db.rawQuery("select * from chatroom order by "+chatroom_updatedate+" desc;", null);
 		while (chatroomCursor.moveToNext()) {
 			chatroom = new ChatRoom();
 			chatroom.strRoomID = chatroomCursor.getString(0);
@@ -359,6 +381,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
+			friend.iIsBlack=friendCursor.getInt(12);
 			friendlist.add(friend);
 		}
 		friendCursor.close();
@@ -397,6 +420,8 @@ public class DBManager {
 
 		return linkCursor.getCount();
 	}
+	
+	
 
 	public void selectLinkDB(int flag, ArrayList<Link> linklist) {
 		Link link;
@@ -467,6 +492,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
+			friend.iIsBlack=friendCursor.getInt(12);
 			friendlist.add(friend);
 		}
 
@@ -496,6 +522,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
+			friend.iIsBlack=friendCursor.getInt(12);
 			Log.e("!!!!!!!!!!!!!", friend.iIsFlag + "");
 		}
 		friendCursor.close();
@@ -522,7 +549,6 @@ public class DBManager {
 			return true;
 		return false;
 	}
-	
 
 	public Link selectLinkDB(String id) {
 		Link link = null;

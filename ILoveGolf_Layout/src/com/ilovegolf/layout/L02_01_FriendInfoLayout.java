@@ -56,16 +56,19 @@ public class L02_01_FriendInfoLayout {
 				base.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 				relative.addView(base);
 				{
-					paddingleft = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
+					paddingleft = ((int) (((float) 21 * (float) viewWidth) / (float) 480));
 					paddingtop = ((int) (((float) 14 * (float) viewHight) / (float) 800));
-					tempWidth = ((int) (((float) 111 * (float) viewWidth) / (float) 480));
-					tempHeight = ((int) (((float) 111 * (float) viewHight) / (float) 800));
+					tempWidth = ((int) (((float) 115 * (float) viewWidth) / (float) 480));
+					tempHeight = ((int) (((float) 115 * (float) viewHight) / (float) 800));
 					l02_01_img_pic = new ImageView(context);
 					LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(new LayoutParams(tempWidth, tempHeight));
 					param.setMargins(paddingleft, paddingtop, 0, 0);
 					l02_01_img_pic.setLayoutParams(param);
 					l02_01_img_pic.setBackgroundColor(Color.WHITE);
+					l02_01_img_pic.setImageResource(R.drawable.profile_img);
 					base.addView(l02_01_img_pic);
+					
+					
 				}
 				LinearLayout linear = new LinearLayout(context);
 				linear.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -81,7 +84,7 @@ public class L02_01_FriendInfoLayout {
 					{
 
 						paddingleft = ((int) (((float) 168 * (float) viewWidth) / (float) 480));
-						paddingtop = ((int) (((float) 29 * (float) viewHight) / (float) 800));
+						paddingtop = ((int) (((float) 26 * (float) viewHight) / (float) 800));
 						l02_01_text_name = new TextView(context);
 						LinearLayout.LayoutParams param3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
 						param3.setMargins(paddingleft, paddingtop, 0, 0);
@@ -111,27 +114,28 @@ public class L02_01_FriendInfoLayout {
 						linear2.addView(l02_01_btn_close);
 					}
 					paddingleft = ((int) (((float) 168 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 5 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 3 * (float) viewHight) / (float) 800));
 					paddingright = ((int) (((float) 42 * (float) viewWidth) / (float) 480));
-					tempHeight = ((int) (((float) 20 * (float) viewHight) / (float) 800));
+					tempHeight = ((int) (((float) 40 * (float) viewHight) / (float) 800));
 					l02_01_text_address = new TextView(context);
 					LinearLayout.LayoutParams param6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 					param6.setMargins(paddingleft, paddingtop, paddingright, 0);
 					l02_01_text_address.setLayoutParams(param6);
 					l02_01_text_address.setTextColor(Color.WHITE);
 					l02_01_text_address.setText("초급 여 37세 서울시 강서구");
-					l02_01_text_address.setMaxLines(1);
+					l02_01_text_address.setMaxLines(2);
 					l02_01_text_address.setTextSize(13);
 					linear.addView(l02_01_text_address);
 
 					paddingleft = ((int) (((float) 170 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 9 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 3 * (float) viewHight) / (float) 800));
 					paddingright = ((int) (((float) 44 * (float) viewWidth) / (float) 480));
-					paddingbottom = ((int) (((float) 9 * (float) viewHight) / (float) 800));
-					tempHeight = ((int) (((float) 35 * (float) viewHight) / (float) 800));
+					paddingbottom = ((int) (((float) 3 * (float) viewHight) / (float) 800));
+					tempHeight = ((int) (((float) 40 * (float) viewHight) / (float) 800));
 					l02_01_text_msg = new TextView(context);
 					param6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 					param6.setMargins(paddingleft, paddingtop, paddingright, paddingbottom);
+					l02_01_text_msg.setGravity(Gravity.CENTER_VERTICAL);
 					l02_01_text_msg.setLayoutParams(param6);
 					l02_01_text_msg.setTextColor(Color.WHITE);
 					l02_01_text_msg.setGravity(Gravity.CENTER_VERTICAL);
@@ -141,7 +145,7 @@ public class L02_01_FriendInfoLayout {
 					tempWidth = ((int) (((float) 297 * (float) viewWidth) / (float) 480));
 					tempHeight = ((int) (((float) 48 * (float) viewHight) / (float) 800));
 					paddingleft = ((int) (((float) 90 * (float) viewWidth) / (float) 480));
-					paddingtop = ((int) (((float) 36 * (float) viewHight) / (float) 800));
+					paddingtop = ((int) (((float) 28 * (float) viewHight) / (float) 800));
 					l02_01_btn_sendMessage = new View(context);
 					LinearLayout.LayoutParams param7 = new LinearLayout.LayoutParams(tempWidth, tempHeight);
 					param7.setMargins(paddingleft, paddingtop, 0, 0);

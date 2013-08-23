@@ -71,7 +71,7 @@ public class A04_00_ChattingRoom extends TabActivity {
 		}
 		list_chatroom = layout.b00_00_list_content;
 		list_chatroom.setSelector(new ColorDrawable(Color.alpha(0)));
-		chatroomAdapter = new A04_00_ChatRoomAdapter(context, display, chatroomList, sp.getString("myID", ""));
+		chatroomAdapter = new A04_00_ChatRoomAdapter(context, display, chatroomList, sp.getString("myID", ""), sp);
 		list_chatroom.setAdapter(chatroomAdapter);
 		list_chatroom.setSelectionFromTop(chatroomAdapter.getCount(), 0);
 

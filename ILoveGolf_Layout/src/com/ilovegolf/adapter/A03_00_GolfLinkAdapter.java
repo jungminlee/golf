@@ -157,8 +157,7 @@ public class A03_00_GolfLinkAdapter extends BaseAdapter {
 			TextView text_address = layout.i03_00_text_address;
 
 			text_name.setText(link.strName);
-			String[] address=link.strAddress_text.split("µ¿ ");
-			text_address.setText(address[0]+"µ¿");
+			text_address.setText(link.strAddress_text);
 
 			if (link.favorite) {
 				layout.line.setBackgroundResource(R.drawable.golf_position_fav_list);

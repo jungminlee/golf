@@ -35,6 +35,7 @@ public class A05_00_Setting extends TabActivity {
 	TextView btn_alarm = null;
 	TextView btn_qna = null;
 	TextView btn_pay = null;
+	TextView btn_notice = null;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,16 +60,19 @@ public class A05_00_Setting extends TabActivity {
 		btn_alarm = settinglayout.l05_00_btn_alarm;
 		btn_qna = settinglayout.l05_00_btn_qna;
 		btn_pay = settinglayout.l05_00_btn_pay;
-
+		btn_notice = settinglayout.l05_00_btn_notice;
+		
 		btn_profile.setOnClickListener(onClick);
 		btn_alarm.setOnClickListener(onClick);
 		btn_qna.setOnClickListener(onClick);
 		btn_pay.setOnClickListener(onClick);
+		btn_notice.setOnClickListener(onClick);
 
 		btn_profile.setOnTouchListener(onTouch);
 		btn_alarm.setOnTouchListener(onTouch);
 		btn_qna.setOnTouchListener(onTouch);
 		btn_pay.setOnTouchListener(onTouch);
+		btn_notice.setOnTouchListener(onTouch);
 	}
 
 	OnClickListener onClick = new OnClickListener() {
@@ -87,6 +91,9 @@ public class A05_00_Setting extends TabActivity {
 				startActivity(intent);
 			}else if (v == btn_pay) {
 				Intent intent = new Intent(getBaseContext(), A05_04_Payment.class);
+				startActivity(intent);
+			}else if (v == btn_notice) {
+				Intent intent = new Intent(getBaseContext(), A05_05_Notice.class);
 				startActivity(intent);
 			}
 		}
@@ -115,6 +122,11 @@ public class A05_00_Setting extends TabActivity {
 					v.setBackgroundResource(R.drawable.golf_setup_pay_line_on);
 				else if (event.getAction() == MotionEvent.ACTION_UP)
 					v.setBackgroundResource(R.drawable.golf_setup_pay_line);
+			}else if (v == btn_notice) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					v.setBackgroundResource(R.drawable.golf_setup_info_line_on);
+				else if (event.getAction() == MotionEvent.ACTION_UP)
+					v.setBackgroundResource(R.drawable.golf_setup_info_line_off);
 			}
 			return false;
 		}

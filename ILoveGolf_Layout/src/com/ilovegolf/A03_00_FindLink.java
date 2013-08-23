@@ -175,8 +175,7 @@ public class A03_00_FindLink extends TabActivity {
 
 					text_linkinfo_name.setText(link.strName);
 					text_linkinfo_msg.setText("시스템 수 : "+link.strlink_system+" 주차가능 여부 : "+link.strlink_parking);
-					String[] address=link.strAddress_text.split("동 ");
-					text_linkinfo_address.setText(address[1]);
+					text_linkinfo_address.setText(link.strAddress_text);
 
 					btn_favorite = layout_LinkInfo.l03_01_btn_favorite;
 					View btn_linkinfo_close = layout_LinkInfo.l03_01_btn_close;

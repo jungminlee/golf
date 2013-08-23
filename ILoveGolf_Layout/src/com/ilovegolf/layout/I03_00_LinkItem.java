@@ -57,7 +57,7 @@ public class I03_00_LinkItem {
 			i03_00_peopleitem.addView(line);
 			{
 				tempHeight = ((int) (((float) 38 * (float) viewHight) / (float) 800));
-				paddingWidth = ((int) (((float) 120 * (float) viewWidth) / (float) 480));
+				paddingWidth = ((int) (((float) 40 * (float) viewWidth) / (float) 480));
 				i03_00_text_name = new TextView(context);
 				LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 				param.setMargins(paddingWidth, 0, 0, 0);
@@ -67,7 +67,7 @@ public class I03_00_LinkItem {
 				line.addView(i03_00_text_name);
 
 				tempHeight = ((int) (((float) 42 * (float) viewHight) / (float) 800));
-				paddingWidth = ((int) (((float) 120 * (float) viewWidth) / (float) 480));
+				paddingWidth = ((int) (((float) 40 * (float) viewWidth) / (float) 480));
 				i03_00_text_address = new TextView(context);
 				LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, tempHeight);
 				param2.setMargins(paddingWidth, 0, 0, 0);

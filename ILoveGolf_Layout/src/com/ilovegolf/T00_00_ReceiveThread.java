@@ -95,15 +95,15 @@ public class T00_00_ReceiveThread extends Thread {
 							}
 						}
 					} else if (message.indexOf("ADDRESSGU") != -1) {
-						InputAddress add=new InputAddress();
-						add.strAddress_si=msg.getString("Address_si");
+						InputAddress add = new InputAddress();
+						add.strAddress_si = msg.getString("Address_si");
 						synchronized (StaticClass.dbm) {
 							StaticClass.dbm.insertAddressDB(add.strAddress_si, msg.getString("Address_gu"));
 						}
 					} else if (message.indexOf("ADDRESSDONG") != -1) {
-						InputAddress add=new InputAddress();
-						add.strAddress_si=msg.getString("Address_si");
-						add.strAddress_gu=msg.getString("Address_gu");
+						InputAddress add = new InputAddress();
+						add.strAddress_si = msg.getString("Address_si");
+						add.strAddress_gu = msg.getString("Address_gu");
 						synchronized (StaticClass.dbm) {
 							StaticClass.dbm.insertAddressDB(msg.getString("Address_si"), msg.getString("Address_gu"), msg.getString("Address_dong"));
 						}
@@ -208,268 +208,330 @@ public class T00_00_ReceiveThread extends Thread {
 						StaticClass.handler.sendMessage(hanMessage);
 					} else if (message.indexOf("OLDSENDMESSAGE") != -1) {
 						String messageid = msg.getString("Message_ID");
+						String sender = msg.getString("Sender_ID");
 
-						RecvMessage recv = new RecvMessage();
-						recv.strPeopleID = msg.getString("Sender_ID");
-						recv.strPeopleName = msg.getString("Sender_Name");
-						recv.strContent = msg.getString("Message_content");
-						recv.strDate = msg.getString("Message_date");
-						recv.iCode = Integer.parseInt(msg.getString("Message_code"));
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							RecvMessage recv = new RecvMessage();
+							recv.strPeopleID = sender;
+							recv.strPeopleName = msg.getString("Sender_Name");
+							recv.strContent = msg.getString("Message_content");
+							recv.strDate = msg.getString("Message_date");
+							recv.iCode = Integer.parseInt(msg.getString("Message_code"));
 
-						ChatRoom chatroom = new ChatRoom();
-						chatroom.strRoomID = recv.strPeopleID;
-						chatroom.strRoomName = recv.strPeopleName;
-						chatroom.strUpdateDate = recv.strDate.replace("^", ":");
-						chatroom.strUpdateMessage = recv.strContent;
+							ChatRoom chatroom = new ChatRoom();
+							chatroom.strRoomID = recv.strPeopleID;
+							chatroom.strRoomName = recv.strPeopleName;
+							chatroom.strUpdateDate = recv.strDate.replace("^", ":");
+							chatroom.strUpdateMessage = recv.strContent;
 
-						synchronized (StaticClass.dbm) {
-							StaticClass.dbm.insertMessageDB(recv);
-							if (!StaticClass.dbm.selectChatRoomDB(chatroom.strRoomID)) {
-								StaticClass.dbm.insertChatRoomDB(chatroom);
-							} else {
-								StaticClass.dbm.updateChatRoomDB(chatroom);
+							synchronized (StaticClass.dbm) {
+								Friend friend = StaticClass.dbm.selectFriendDB(chatroom.strRoomID);
+								friend.iIsFlag = 3;
+								StaticClass.dbm.updateFriendDB(friend);
+
+								StaticClass.dbm.insertMessageDB(recv);
+								if (!StaticClass.dbm.selectChatRoomDB(chatroom.strRoomID)) {
+									StaticClass.dbm.insertChatRoomDB(chatroom);
+								} else {
+									StaticClass.dbm.updateChatRoomDB(chatroom);
+								}
 							}
-						}
 
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.MESSAGE_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
+
+						}
 						String send = "BEGIN SENDMESSAGEACK\r\n";
 						send += "Message_ID:" + messageid + "\r\n";
 						send += "END\r\n";
 						StaticClass.DataSoc.sendMessage(send);
 
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.MESSAGE_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
 					} else if (message.indexOf("SENDMESSAGE") != -1) {
 						String messageid = msg.getString("Message_ID");
 
-						RecvMessage recv = new RecvMessage();
-						recv.strPeopleID = msg.getString("Sender_ID");
-						recv.strPeopleName = msg.getString("Sender_Name");
-						recv.strContent = msg.getString("Message_content");
-						recv.strDate = msg.getString("Message_date");
-						recv.iCode = Integer.parseInt(msg.getString("Message_code"));
+						String sender = msg.getString("Sender_ID");
 
-						ChatRoom chatroom = new ChatRoom();
-						chatroom.strRoomID = recv.strPeopleID;
-						chatroom.strRoomName = recv.strPeopleName;
-						chatroom.strUpdateDate = recv.strDate.replace("^", ":");;
-						chatroom.strUpdateMessage = recv.strContent;
+						System.out.println("확인해본당");
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							System.out.println("차단안했음");
 
-						synchronized (StaticClass.dbm) {
-							StaticClass.dbm.insertMessageDB(recv);
-							if (!StaticClass.dbm.selectChatRoomDB(chatroom.strRoomID)) {
-								StaticClass.dbm.insertChatRoomDB(chatroom);
-							} else {
-								StaticClass.dbm.updateChatRoomDB(chatroom);
+
+							RecvMessage recv = new RecvMessage();
+							recv.strPeopleID = sender;
+							recv.strPeopleName = msg.getString("Sender_Name");
+							recv.strContent = msg.getString("Message_content");
+							recv.strDate = msg.getString("Message_date");
+							recv.iCode = Integer.parseInt(msg.getString("Message_code"));
+
+							ChatRoom chatroom = new ChatRoom();
+							chatroom.strRoomID = recv.strPeopleID;
+							chatroom.strRoomName = recv.strPeopleName;
+							chatroom.strUpdateDate = recv.strDate.replace("^", ":");
+							;
+							chatroom.strUpdateMessage = recv.strContent;
+
+							synchronized (StaticClass.dbm) {
+								Friend friend = StaticClass.dbm.selectFriendDB(chatroom.strRoomID);
+								friend.iIsFlag = 3;
+								StaticClass.dbm.updateFriendDB(friend);
+
+								StaticClass.dbm.insertMessageDB(recv);
+								if (!StaticClass.dbm.selectChatRoomDB(chatroom.strRoomID)) {
+									StaticClass.dbm.insertChatRoomDB(chatroom);
+								} else {
+									StaticClass.dbm.updateChatRoomDB(chatroom);
+								}
 							}
+
+							if (!recv.strPeopleID.equals(StaticClass.chatmember) && sp.getInt("myIsAlarm", 0) == 1) {
+								final String gcmMsg = "메세지가 도착했습니다";
+								final String gcmTitle = "아이러브골프";
+								NotificationManager mNotiManager = (NotificationManager) context.getSystemService("notification");
+								Notification noti = new Notification(R.drawable.noti, gcmMsg, System.currentTimeMillis());
+								if (sp.getInt("myIsVibrate", 0) == 1) {
+									if (sp.getInt("myIsRing", 0) == 1)
+										noti.defaults |= (Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+									else
+										noti.defaults |= Notification.DEFAULT_VIBRATE;
+								} else
+									noti.defaults = 0;
+
+								noti.flags |= Notification.FLAG_AUTO_CANCEL;
+								// noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+								Intent intent = new Intent(context, A04_00_RecvMessageList.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								intent.putExtra("id", recv.strPeopleID);
+								PendingIntent content = PendingIntent.getActivity(context, 0, intent, 0);
+								noti.setLatestEventInfo(context, gcmTitle, gcmMsg, content);
+								mNotiManager.notify(1, noti);
+
+							}
+
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.MESSAGE_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
 						}
-
-						if (!recv.strPeopleID.equals(StaticClass.chatmember) && sp.getInt("myIsAlarm", 0) == 1) {
-							final String gcmMsg = "메세지가 도착했습니다";
-							final String gcmTitle = "아이러브골프";
-							NotificationManager mNotiManager = (NotificationManager) context.getSystemService("notification");
-							Notification noti = new Notification(R.drawable.noti, gcmMsg, System.currentTimeMillis());
-							if (sp.getInt("myIsVibrate", 0) == 1) {
-								if (sp.getInt("myIsRing", 0) == 1)
-									noti.defaults |= (Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-								else
-									noti.defaults |= Notification.DEFAULT_VIBRATE;
-							} else
-								noti.defaults = 0;
-
-							noti.flags |= Notification.FLAG_AUTO_CANCEL;
-							// noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
-							Intent intent = new Intent(context, A04_00_RecvMessageList.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							intent.putExtra("id", recv.strPeopleID);
-							PendingIntent content = PendingIntent.getActivity(context, 0, intent, 0);
-							noti.setLatestEventInfo(context, gcmTitle, gcmMsg, content);
-							mNotiManager.notify(1, noti);
-
-						}
-
 						String send = "BEGIN SENDMESSAGEACK\r\n";
 						send += "Member_ID:" + sp.getString("MyID", "");
 						send += "Message_ID:" + messageid + "\r\n";
 						send += "END\r\n";
 						StaticClass.DataSoc.sendMessage(send);
 
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.MESSAGE_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
 					} else if (message.indexOf("CREATECHATROOM") != -1) {
-						ChatRoom chatroom = new ChatRoom();
-						synchronized (StaticClass.dbm) {
-							String friendid = msg.getString("Sender_ID");
-							if (StaticClass.dbm.selectFriendDB1(friendid)) {
-								Friend friend = StaticClass.dbm.selectFriendDB(msg.getString("Sender_ID"));
-								chatroom.strRoomID = friend.strID;
-								chatroom.strRoomName = friend.strName;
-							} else {
-								Friend friend = new Friend();
-								friend.strID = friendid;
-								friend.strName = msg.getString("Sender_Name");
-								friend.strMessage = msg.getString("Sender_Message");
-								friend.strImage = msg.getString("Sender_Image");
-								friend.strSex = msg.getString("Sender_Sex");
-								friend.strGrade = msg.getString("Sender_Grade");
-								// 시, 동, 구 추가
-								StaticClass.dbm.insertFriendDB(friend);
-							}
-						}
-						synchronized (StaticClass.dbm) {
-							if (!StaticClass.dbm.selectChatRoomDB(chatroom.strRoomID)) {
-								StaticClass.dbm.insertChatRoomDB(chatroom);
-							}
-						}
+						String sender = msg.getString("Sender_ID");
 
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							ChatRoom chatroom = new ChatRoom();
+							synchronized (StaticClass.dbm) {
+								String friendid = sender;
+								if (StaticClass.dbm.selectFriendDB1(friendid)) {
+									Friend friend = StaticClass.dbm.selectFriendDB(msg.getString("Sender_ID"));
+									chatroom.strRoomID = friend.strID;
+									chatroom.strRoomName = friend.strName;
+									chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
+								} else {
+									Friend friend = new Friend();
+									friend.strID = friendid;
+									friend.strName = msg.getString("Sender_Name");
+									friend.strMessage = msg.getString("Sender_Message");
+									friend.strImage = msg.getString("Sender_Image");
+									friend.strSex = msg.getString("Sender_Sex");
+									friend.strGrade = msg.getString("Sender_Grade");
+									// 시, 동, 구 추가
+									StaticClass.dbm.insertFriendDB(friend);
+								}
+							}
+							synchronized (StaticClass.dbm) {
+								if (!StaticClass.dbm.selectChatRoomDB(chatroom.strRoomID)) {
+									StaticClass.dbm.insertChatRoomDB(chatroom);
+								}
+							}
+
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
+						}
 
 						String send = "BEGIN CREATECHATROOMACK\r\n";
-						send += "Sender_ID:" + chatroom.strRoomID + "\r\n";
+						send += "Sender_ID:" + sender + "\r\n";
 						send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
 						send += "END\r\n";
 						StaticClass.DataSoc.sendMessage(send);
 
 					} else if (message.indexOf("OLDSENDREQUEST") != -1) {
-						Friend friend = null;
-						synchronized (StaticClass.dbm) {
-							friend = StaticClass.dbm.selectFriendDB(msg.getString("Sender_ID"));
+
+						String sender = msg.getString("Sender_ID");
+
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							Friend friend = null;
+							synchronized (StaticClass.dbm) {
+								friend = StaticClass.dbm.selectFriendDB(sender);
+							}
+
+							friend.iIsFlag = 2;
+
+							StaticClass.dbm.updateFriendDB(friend);
+							ChatRoom chatroom = new ChatRoom();
+							chatroom.strRoomID = friend.strID;
+							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
+							StaticClass.dbm.updateChatRoomDB(chatroom);
+
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
+
+							String send = "BEGIN SENDREQUESTACK\r\n";
+							send += "Sender_ID:" + friend.strID + "\r\n";
+							send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
+							send += "END\r\n";
+							StaticClass.DataSoc.sendMessage(send);
+
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
 						}
-
-						friend.iIsFlag = 2;
-
-						StaticClass.dbm.updateFriendDB(friend);
-
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
-
-						String send = "BEGIN SENDREQUESTACK\r\n";
-						send += "Sender_ID:" + friend.strID + "\r\n";
-						send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
-						send += "END\r\n";
-						StaticClass.DataSoc.sendMessage(send);
-
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
 					} else if (message.indexOf("SENDREQUEST") != -1) {
-						Friend friend = null;
-						synchronized (StaticClass.dbm) {
-							friend = StaticClass.dbm.selectFriendDB(msg.getString("Sender_ID"));
-						}
+						String sender = msg.getString("Sender_ID");
 
-						friend.iIsFlag = 2;
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							Friend friend = null;
+							synchronized (StaticClass.dbm) {
+								friend = StaticClass.dbm.selectFriendDB(sender);
+							}
 
-						StaticClass.dbm.updateFriendDB(friend);
+							friend.iIsFlag = 2;
 
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+							StaticClass.dbm.updateFriendDB(friend);
 
-						String send = "BEGIN SENDREQUESTACK\r\n";
-						send += "Sender_ID:" + friend.strID + "\r\n";
-						send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
-						send += "END\r\n";
-						StaticClass.DataSoc.sendMessage(send);
+							ChatRoom chatroom = new ChatRoom();
+							chatroom.strRoomID = friend.strID;
+							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
+							StaticClass.dbm.updateChatRoomDB(chatroom);
 
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
 
-						if (!friend.strID.equals(StaticClass.chatmember) && sp.getInt("myIsAlarm", 0) == 1) {
-							final String gcmMsg = "골프요청이 도착했습니다";
-							final String gcmTitle = "아이러브골프";
-							NotificationManager mNotiManager = (NotificationManager) context.getSystemService("notification");
-							Notification noti = new Notification(R.drawable.noti, gcmMsg, System.currentTimeMillis());
-							if (sp.getInt("myIsVibrate", 0) == 1) {
-								if (sp.getInt("myIsRing", 0) == 1)
-									noti.defaults |= (Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-								else
-									noti.defaults |= Notification.DEFAULT_VIBRATE;
-							} else
-								noti.defaults = 0;
+							String send = "BEGIN SENDREQUESTACK\r\n";
+							send += "Sender_ID:" + friend.strID + "\r\n";
+							send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
+							send += "END\r\n";
+							StaticClass.DataSoc.sendMessage(send);
 
-							noti.flags |= Notification.FLAG_AUTO_CANCEL;
-							// noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
-							Intent intent = new Intent(context, A04_00_ChattingRoom.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							PendingIntent content = PendingIntent.getActivity(context, 0, intent, 0);
-							noti.setLatestEventInfo(context, gcmTitle, gcmMsg, content);
-							mNotiManager.notify(1, noti);
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
 
+							if (!friend.strID.equals(StaticClass.chatmember) && sp.getInt("myIsAlarm", 0) == 1) {
+								final String gcmMsg = "골프요청이 도착했습니다";
+								final String gcmTitle = "아이러브골프";
+								NotificationManager mNotiManager = (NotificationManager) context.getSystemService("notification");
+								Notification noti = new Notification(R.drawable.noti, gcmMsg, System.currentTimeMillis());
+								if (sp.getInt("myIsVibrate", 0) == 1) {
+									if (sp.getInt("myIsRing", 0) == 1)
+										noti.defaults |= (Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+									else
+										noti.defaults |= Notification.DEFAULT_VIBRATE;
+								} else
+									noti.defaults = 0;
+
+								noti.flags |= Notification.FLAG_AUTO_CANCEL;
+								// noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+								Intent intent = new Intent(context, A04_00_ChattingRoom.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								PendingIntent content = PendingIntent.getActivity(context, 0, intent, 0);
+								noti.setLatestEventInfo(context, gcmTitle, gcmMsg, content);
+								mNotiManager.notify(1, noti);
+
+							}
 						}
 					} else if (message.indexOf("OLDACCEPTREQUEST") != -1) {
-						Friend friend = null;
-						synchronized (StaticClass.dbm) {
-							friend = StaticClass.dbm.selectFriendDB(msg.getString("Sender_ID"));
-						}
-						friend.iIsFlag = 3;
-						synchronized (StaticClass.dbm) {
-							StaticClass.dbm.updateFriendDB(friend);
-						}
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+						String sender = msg.getString("Sender_ID");
 
-						String send = "BEGIN ACCEPTREQUESTACK\r\n";
-						send += "Sender_ID:" + friend.strID + "\r\n";
-						send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
-						send += "END\r\n";
-						StaticClass.DataSoc.sendMessage(send);
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							Friend friend = null;
+							synchronized (StaticClass.dbm) {
+								friend = StaticClass.dbm.selectFriendDB(sender);
+							}
+							friend.iIsFlag = 3;
+							synchronized (StaticClass.dbm) {
+								StaticClass.dbm.updateFriendDB(friend);
+							}
+							ChatRoom chatroom = new ChatRoom();
+							chatroom.strRoomID = friend.strID;
+							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
+							StaticClass.dbm.updateChatRoomDB(chatroom);
 
-						Log.e("???????", "두번오나???");
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
+
+							String send = "BEGIN ACCEPTREQUESTACK\r\n";
+							send += "Sender_ID:" + friend.strID + "\r\n";
+							send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
+							send += "END\r\n";
+							StaticClass.DataSoc.sendMessage(send);
+
+							Log.e("???????", "두번오나???");
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
+						}
 					} else if (message.indexOf("ACCEPTREQUEST") != -1) {
-						Friend friend = null;
-						synchronized (StaticClass.dbm) {
-							friend = StaticClass.dbm.selectFriendDB(msg.getString("Sender_ID"));
-						}
-						friend.iIsFlag = 3;
-						synchronized (StaticClass.dbm) {
-							StaticClass.dbm.updateFriendDB(friend);
-						}
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+						String sender = msg.getString("Sender_ID");
 
-						String send = "BEGIN ACCEPTREQUESTACK\r\n";
-						send += "Sender_ID:" + friend.strID + "\r\n";
-						send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
-						send += "END\r\n";
-						StaticClass.DataSoc.sendMessage(send);
+						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+							Friend friend = null;
+							synchronized (StaticClass.dbm) {
+								friend = StaticClass.dbm.selectFriendDB(sender);
+							}
+							friend.iIsFlag = 3;
+							synchronized (StaticClass.dbm) {
+								StaticClass.dbm.updateFriendDB(friend);
+							}
+							ChatRoom chatroom = new ChatRoom();
+							chatroom.strRoomID = friend.strID;
+							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
+							StaticClass.dbm.updateChatRoomDB(chatroom);
 
-						Log.e("???????", "두번오나???");
-						hanMessage = new Message();
-						hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
-						StaticClass.handler.sendMessage(hanMessage);
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
 
-						if (!friend.strID.equals(StaticClass.chatmember) && sp.getInt("myIsAlarm", 0) == 1) {
-							final String gcmMsg = "골프요청 수락하셨습니다";
-							final String gcmTitle = "아이러브골프";
-							NotificationManager mNotiManager = (NotificationManager) context.getSystemService("notification");
-							Notification noti = new Notification(R.drawable.noti, gcmMsg, System.currentTimeMillis());
-							if (sp.getInt("myIsVibrate", 0) == 1) {
-								if (sp.getInt("myIsRing", 0) == 1)
-									noti.defaults |= (Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-								else
-									noti.defaults |= Notification.DEFAULT_VIBRATE;
-							} else
-								noti.defaults = 0;
+							String send = "BEGIN ACCEPTREQUESTACK\r\n";
+							send += "Sender_ID:" + friend.strID + "\r\n";
+							send += "Recver_ID:" + sp.getString("myID", "") + "\r\n";
+							send += "END\r\n";
+							StaticClass.DataSoc.sendMessage(send);
 
-							noti.flags |= Notification.FLAG_AUTO_CANCEL;
-							// noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
-							Intent intent = new Intent(context, A04_00_ChattingRoom.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							PendingIntent content = PendingIntent.getActivity(context, 0, intent, 0);
-							noti.setLatestEventInfo(context, gcmTitle, gcmMsg, content);
-							mNotiManager.notify(1, noti);
+							Log.e("???????", "두번오나???");
+							hanMessage = new Message();
+							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
+							StaticClass.handler.sendMessage(hanMessage);
 
+							if (!friend.strID.equals(StaticClass.chatmember) && sp.getInt("myIsAlarm", 0) == 1) {
+								final String gcmMsg = "골프요청 수락하셨습니다";
+								final String gcmTitle = "아이러브골프";
+								NotificationManager mNotiManager = (NotificationManager) context.getSystemService("notification");
+								Notification noti = new Notification(R.drawable.noti, gcmMsg, System.currentTimeMillis());
+								if (sp.getInt("myIsVibrate", 0) == 1) {
+									if (sp.getInt("myIsRing", 0) == 1)
+										noti.defaults |= (Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+									else
+										noti.defaults |= Notification.DEFAULT_VIBRATE;
+								} else
+									noti.defaults = 0;
+
+								noti.flags |= Notification.FLAG_AUTO_CANCEL;
+								// noti.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+								Intent intent = new Intent(context, A04_00_ChattingRoom.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								PendingIntent content = PendingIntent.getActivity(context, 0, intent, 0);
+								noti.setLatestEventInfo(context, gcmTitle, gcmMsg, content);
+								mNotiManager.notify(1, noti);
+
+							}
 						}
 					}
 				}

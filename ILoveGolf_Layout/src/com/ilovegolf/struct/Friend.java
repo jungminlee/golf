@@ -13,5 +13,6 @@ public class Friend {
 	public String strAddressDong="";
 	public int iIsFavorite=0;
 	public int iIsFlag=0;
+	public int iIsBlack=0;
 	public boolean favorite=false;
 }

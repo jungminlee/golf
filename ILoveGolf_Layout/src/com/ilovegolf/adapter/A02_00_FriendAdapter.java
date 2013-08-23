@@ -154,6 +154,12 @@ public class A02_00_FriendAdapter extends BaseAdapter {
 			ImageView img_pic = layout.i02_00_img_pic;
 
 			String str = "";
+			
+			if (friend.strSex.equals("M"))
+				str += "(남)\n";
+			else
+				str += "(여)\n";
+			
 			if (friend.strGrade.equals("A1"))
 				str += "초급";
 			else if (friend.strGrade.equals("B1"))
@@ -163,13 +169,9 @@ public class A02_00_FriendAdapter extends BaseAdapter {
 			else if (friend.strGrade.equals("D1"))
 				str += "프로";
 
-			if (friend.strSex.equals("M"))
-				str += " 남";
-			else
-				str += " 여";
 
 			TextView text_name = layout.i02_00_text_name;
-			text_name.setText(friend.strName + "\r\n" + str);
+			text_name.setText(friend.strName + str);
 
 			TextView text_message = layout.i02_00_text_message;
 			if (friend.strMessage.equals("null"))

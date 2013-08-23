@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -166,10 +167,27 @@ public class A02_00_Friend extends TabActivity {
 					layout_FriendInfo = new L02_01_FriendInfoLayout();
 					layout_Friend.addView(layout_FriendInfo.getLayout(context, display), new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
+					String str = "";
+					if (friend.strSex.equals("M"))
+						str += "(남)\n";
+					else
+						str += "(여)\n";
+
 					TextView text_name = layout_FriendInfo.l02_01_text_name;
-					text_name.setText(friend.strName);
+					text_name.setText(friend.strName + str);
+
+					str = "";
+					if (friend.strGrade.equals("A1"))
+						str += "\n초급";
+					else if (friend.strGrade.equals("B1"))
+						str += "\n중급";
+					else if (friend.strGrade.equals("C1"))
+						str += "\n고급";
+					else if (friend.strGrade.equals("D1"))
+						str += "\n프로";
 					TextView text_address = layout_FriendInfo.l02_01_text_address;
-					text_address.setText(friend.strAddressSi + " " + friend.strAddressGu + " " + friend.strAddressDong);
+
+					text_address.setText(friend.strAddressSi + " " + friend.strAddressGu + " " + friend.strAddressDong + str);
 
 					TextView text_message = layout_FriendInfo.l02_01_text_msg;
 
@@ -185,9 +203,12 @@ public class A02_00_Friend extends TabActivity {
 						text_message.setText(friend.strMessage);
 
 					ImageView img_pic = layout_FriendInfo.l02_01_img_pic;
-					if (friend.strImage.length() != 0)
-						img_pic.setImageBitmap(BitmapFactory.decodeFile("/mnt/sdcard/golfpic/" + friend.strID));
 
+					System.out.println("friend.strImage::::::"+friend.strImage);
+					if (friend.strImage!=null && !friend.strImage.equals(" ") && !friend.strImage.equals("") && !friend.strImage.equals("null"))
+						img_pic.setImageBitmap(BitmapFactory.decodeFile("/mnt/sdcard/golfpic/" + friend.strID));
+					else 
+						img_pic.setImageResource(R.drawable.profile_img);
 					View btn_close = layout_FriendInfo.l02_01_btn_close;
 					btn_favorite = layout_FriendInfo.l02_01_btn_favorite;
 					View btn_sendMessage = layout_FriendInfo.l02_01_btn_sendMessage;
@@ -306,6 +327,8 @@ public class A02_00_Friend extends TabActivity {
 												ChatRoom chatroom = new ChatRoom();
 												chatroom.strRoomID = friend.strID;
 												chatroom.strRoomName = friend.strName;
+												chatroom.strUpdateDate=StaticClass.format.format(new Date()).replace("^", ":");
+												
 												if (!StaticClass.dbm.selectChatRoomDB(friend.strID)) {
 													StaticClass.dbm.insertChatRoomDB(chatroom);
 												}
@@ -319,7 +342,19 @@ public class A02_00_Friend extends TabActivity {
 									});
 
 									StaticClass.alert.show();
-								} else if (StaticClass.dbm.selectChatRoomDB(friend.strID)) {
+								} else if (friend.iIsFlag == 3) {
+									ChatRoom chatroom = new ChatRoom();
+									chatroom.strRoomID = friend.strID;
+									chatroom.strRoomName = friend.strName;
+									if(StaticClass.dbm.selectChatRoomDB(friend.strID)) {
+										Intent intent = new Intent(context.getApplicationContext(), A04_00_RecvMessageList.class);
+										intent.putExtra("id", chatroom.strRoomID);
+										context.startActivity(intent);
+										finish();
+									}else {
+										StaticClass.dbm.insertChatRoomDB(chatroom);
+									}
+								} else {
 									StaticClass.alert = new AlertDialog.Builder(context).create();
 									StaticClass.alert.setTitle("아이러브골프");
 									StaticClass.alert.setMessage("이미 요청 하셨습니다.");

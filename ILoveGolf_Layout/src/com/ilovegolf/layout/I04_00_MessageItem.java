@@ -45,7 +45,7 @@ public class I04_00_MessageItem {
 				relative.addView(linear);
 				{
 					paddingWidth = ((int) (((float) 22 * (float) viewWidth) / (float) 480));
-					paddingHeight= ((int) (((float) 13 * (float) viewHight) / (float) 800));
+					paddingHeight = ((int) (((float) 13 * (float) viewHight) / (float) 800));
 					tempWidth = ((int) (((float) 54 * (float) viewWidth) / (float) 480));
 					tempHeight = ((int) (((float) 54 * (float) viewHight) / (float) 800));
 					LinearLayout linear5 = new LinearLayout(context);
@@ -61,7 +61,7 @@ public class I04_00_MessageItem {
 						linear5.addView(i04_00_img_pic);
 					}
 				}
-				
+
 				tempWidth = ((int) (((float) 83 * (float) viewWidth) / (float) 480));
 				tempHeight = ((int) (((float) 81 * (float) viewHight) / (float) 800));
 				LinearLayout frame = new LinearLayout(context);
@@ -92,10 +92,10 @@ public class I04_00_MessageItem {
 						linear2.addView(i04_00_text_name);
 
 						LinearLayout linear3 = new LinearLayout(context);
-						linear3.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+						linear3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 						linear2.addView(linear3);
 						{
-							tempWidth = ((int) (((float) 304 * (float) viewWidth) / (float) 480));
+							tempWidth = ((int) (((float) 232 * (float) viewWidth) / (float) 480));
 							i04_00_text_message = new TextView(context);
 							i04_00_text_message.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 							i04_00_text_message.setBackgroundResource(R.drawable.favorie_say);
@@ -104,20 +104,13 @@ public class I04_00_MessageItem {
 							i04_00_text_message.setGravity(Gravity.CENTER_VERTICAL);
 							linear3.addView(i04_00_text_message);
 
-							LinearLayout linear4 = new LinearLayout(context);
-							params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-							params.weight = 1;
-							linear3.setLayoutParams(params);
-							linear3.addView(linear4);
-							{
-								tempWidth = ((int) (((float) 70 * (float) viewWidth) / (float) 480));
-								i04_00_text_date = new TextView(context);
-								i04_00_text_date.setLayoutParams(new LayoutParams(tempWidth, LayoutParams.MATCH_PARENT));
-								i04_00_text_date.setTextColor(Color.BLACK);
-								i04_00_text_date.setTextSize(13);
-								i04_00_text_date.setGravity(Gravity.BOTTOM);
-								linear3.addView(i04_00_text_date);
-							}
+							tempWidth = ((int) (((float) 135 * (float) viewWidth) / (float) 480));
+							i04_00_text_date = new TextView(context);
+							i04_00_text_date.setLayoutParams(new LayoutParams(tempWidth, LayoutParams.MATCH_PARENT));
+							i04_00_text_date.setTextColor(Color.BLACK);
+							i04_00_text_date.setTextSize(13);
+							i04_00_text_date.setGravity(Gravity.BOTTOM);
+							linear3.addView(i04_00_text_date);
 						}
 
 					}
