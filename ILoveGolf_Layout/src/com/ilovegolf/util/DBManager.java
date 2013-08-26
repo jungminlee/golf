@@ -87,33 +87,51 @@ public class DBManager {
 	}
 
 	public void paymentCursorCheck() {
-		if (paymentCursor instanceof Cursor)
-			paymentCursor.close();
+		if (paymentCursor instanceof Cursor) {
+			synchronized (paymentCursor) {
+				paymentCursor.close();
+			}
+		}
 	}
 
 	public void addressCursorCheck() {
-		if (addressCursor instanceof Cursor)
-			addressCursor.close();
+		if (addressCursor instanceof Cursor) {
+			synchronized (addressCursor) {
+				addressCursor.close();
+			}
+		}
 	}
 
 	public void chatroomCursorCheck() {
-		if (chatroomCursor instanceof Cursor)
-			chatroomCursor.close();
+		if (chatroomCursor instanceof Cursor) {
+			synchronized (chatroomCursor) {
+				chatroomCursor.close();
+			}
+		}
 	}
 
 	public void friendCursorCheck() {
-		if (friendCursor instanceof Cursor)
-			friendCursor.close();
+		if (friendCursor instanceof Cursor) {
+			synchronized (friendCursor) {
+				friendCursor.close();
+			}
+		}
 	}
 
 	public void linkCursorCheck() {
-		if (linkCursor instanceof Cursor)
-			linkCursor.close();
+		if (linkCursor instanceof Cursor) {
+			synchronized (linkCursor) {
+				linkCursor.close();
+			}
+		}
 	}
 
 	public void messageCursorCheck() {
-		if (linkCursor instanceof Cursor)
-			linkCursor.close();
+		if (messageCursor instanceof Cursor) {
+			synchronized (linkCursor) {
+				messageCursor.close();
+			}
+		}
 	}
 
 	public void deleteLinkDB() {
@@ -177,17 +195,17 @@ public class DBManager {
 	}
 
 	public void insertFriendDB(Friend friend) {
-		db.execSQL("insert into friend values('" + friend.strID + "', '" + friend.strName + "', '" + friend.strPhone + "', '" + friend.strImage + "', '" + friend.strMessage + "', '" + friend.strSex + "', '" + friend.strGrade + "','" + friend.strAddressSi + "' ,'" + friend.strAddressGu + "' ,'" + friend.strAddressDong + "' ," + friend.iIsFavorite + ", " + friend.iIsFlag + ", "+friend.iIsBlack+");");
+		db.execSQL("insert into friend values('" + friend.strID + "', '" + friend.strName + "', '" + friend.strPhone + "', '" + friend.strImage + "', '" + friend.strMessage + "', '" + friend.strSex + "', '" + friend.strGrade + "','" + friend.strAddressSi + "' ,'" + friend.strAddressGu + "' ,'" + friend.strAddressDong + "' ," + friend.iIsFavorite + ", " + friend.iIsFlag + ", " + friend.iIsBlack + ");");
 	}
 
 	public void insertLinkDB(Link link) {
 		db.execSQL("insert into link values('" + link.strID + "', '" + link.strName + "', '" + link.strTel + "', '" + link.strlink_x + "', '" + link.strlink_y + "', '" + link.strAddress_si + "', '" + link.strAddress_gu + "', '" + link.strAddress_dong + "', '" + link.strAddress_text + "', '" + link.strlink_parking + "', '" + link.strlink_system + "', " + link.iIsFavorite + ", " + link.iIsFlag + ");");
 	}
 
-	public void updateFriendBlack(String id){
-		db.execSQL("update friend set "+friend_isblack+"=1 where "+friend_id+"='"+id+"'");
+	public void updateFriendBlack(String id) {
+		db.execSQL("update friend set " + friend_isblack + "=1 where " + friend_id + "='" + id + "'");
 	}
- 	
+
 	public void updateLinkDB(Link link) {
 		System.out.println("update link set " + link_isfavorite + "=" + link.iIsFavorite + ", link_isflag=" + link.iIsFlag + ", " + link_address_si + "='" + link.strAddress_si + "', " + link_address_gu + "='" + link.strAddress_gu + "', " + link_address_dong + "='" + link.strAddress_dong + "', " + link_address_text + "='" + link.strAddress_text + "' where " + link_id + "='" + link.strID + "';");
 		db.execSQL("update link set " + link_isfavorite + "=" + link.iIsFavorite + ", link_isflag=" + link.iIsFlag + ", " + link_address_si + "='" + link.strAddress_si + "', " + link_address_gu + "='" + link.strAddress_gu + "', " + link_address_dong + "='" + link.strAddress_dong + "', " + link_address_text + "='" + link.strAddress_text + "' where " + link_id + "='" + link.strID + "';");
@@ -208,26 +226,24 @@ public class DBManager {
 		paymentCursor.close();
 	}
 
-	
 	public boolean selectFriendBlackDB(String id) {
 		friendCursorCheck();
-		friendCursor=db.rawQuery("select "+friend_isblack+" from "+table_friend+" where "+friend_id+"='"+id+"';", null);
-
-		System.out.println("차단했니안했니왜안했니난했는데"+friendCursor.getInt(0));
-		while(friendCursor.moveToNext()) {
-			if(friendCursor.getInt(0)==1) {
+		friendCursor = db.rawQuery("select " + friend_isblack + " from " + table_friend + " where " + friend_id + "='" + id + "';", null);
+		while (friendCursor.moveToNext()) {
+			if (friendCursor.getInt(0) == 1) {
 				System.out.println("블랙리스트");
 				return true;
-			}
-			else 
+			} else
 				return false;
 		}
 		return false;
 	}
+
 	public void selectAddressDB(ArrayList<String> addressList, int flag, InputAddress add) {
 		String address = "";
 
 		addressCursorCheck();
+
 		if (flag == 1) {
 			addressCursor = db.rawQuery("select DISTINCT " + address_si + " from address where " + address_si + "!='null' order by " + address_si + " asc", null);
 		} else if (flag == 2) {
@@ -245,8 +261,8 @@ public class DBManager {
 
 	public boolean selectAddressDB(int flag, InputAddress add) {
 		String address = "";
-
 		addressCursorCheck();
+
 		if (flag == 2) {
 			addressCursor = db.rawQuery("select distinct * from address where " + address_si + "='" + add.strAddress_si + "';", null);
 			System.out.println(addressCursor.getCount() + ":+:+:+:+:+:+:true");
@@ -271,6 +287,7 @@ public class DBManager {
 		RecvMessage message;
 
 		messageCursorCheck();
+
 		messageCursor = db.rawQuery("select * from message where " + message_peopleid + "='" + id + "';", null);
 		// c.moveToFirst();
 		while (messageCursor.moveToNext()) {
@@ -289,6 +306,7 @@ public class DBManager {
 	public void selectFriendDB(ConcurrentLinkedQueue<Friend> idList) {
 		Friend friend = null;
 		friendCursorCheck();
+
 		friendCursor = db.rawQuery("select * from friend where " + friend_image + " like '%*';", null);
 		// c.moveToFirst();
 		while (friendCursor.moveToNext()) {
@@ -304,7 +322,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
-			friend.iIsBlack=friendCursor.getInt(12);
+			friend.iIsBlack = friendCursor.getInt(12);
 			idList.offer(friend);
 		}
 		friendCursor.close();
@@ -314,7 +332,8 @@ public class DBManager {
 		ChatRoom chatroom;
 
 		chatroomCursorCheck();
-		chatroomCursor = db.rawQuery("select * from chatroom order by "+chatroom_updatedate+" desc;", null);
+
+		chatroomCursor = db.rawQuery("select * from chatroom order by " + chatroom_updatedate + " desc;", null);
 		while (chatroomCursor.moveToNext()) {
 			chatroom = new ChatRoom();
 			chatroom.strRoomID = chatroomCursor.getString(0);
@@ -328,6 +347,7 @@ public class DBManager {
 
 	public boolean selectChatRoomDB(String roomid) {
 		chatroomCursorCheck();
+
 		chatroomCursor = db.rawQuery("select * from chatroom where " + chatroom_roomid + "='" + roomid + "';", null);
 
 		System.out.println("chatroomCursor.getCount() " + chatroomCursor.getCount());
@@ -342,6 +362,7 @@ public class DBManager {
 		Friend friend;
 
 		friendCursorCheck();
+
 		friendCursor = db.rawQuery("select * from friend where " + friend_address_si + "='" + si + "' and " + friend_address_gu + "='" + gu + "' and " + friend_address_dong + "='" + dong + "';", null);
 		// c.moveToFirst();
 		while (friendCursor.moveToNext()) {
@@ -366,6 +387,7 @@ public class DBManager {
 		Friend friend;
 
 		friendCursorCheck();
+
 		friendCursor = db.rawQuery("select * from friend;", null);
 		// c.moveToFirst();
 		while (friendCursor.moveToNext()) {
@@ -381,7 +403,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
-			friend.iIsBlack=friendCursor.getInt(12);
+			friend.iIsBlack = friendCursor.getInt(12);
 			friendlist.add(friend);
 		}
 		friendCursor.close();
@@ -391,6 +413,7 @@ public class DBManager {
 		Link link;
 
 		linkCursorCheck();
+
 		linkCursor = db.rawQuery("select * from " + table_link + " where " + link_address_si + "='" + si + "' and " + link_address_gu + "='" + gu + "' and " + link_address_dong + "='" + dong + "';", null);
 		// c.moveToFirst();
 
@@ -416,16 +439,16 @@ public class DBManager {
 
 	public int selectLinkDBAll() {
 		linkCursorCheck();
+
 		linkCursor = db.rawQuery("select * from link;", null);
 
 		return linkCursor.getCount();
 	}
-	
-	
 
 	public void selectLinkDB(int flag, ArrayList<Link> linklist) {
 		Link link;
 		linkCursorCheck();
+
 		linkCursor = db.rawQuery("select * from link where " + link_isfavorite + "=" + flag + ";", null);
 		// c.moveToFirst();
 		while (linkCursor.moveToNext()) {
@@ -452,6 +475,7 @@ public class DBManager {
 	public void selectFavoriteFriendDB(int flag, ArrayList<Friend> friendlist) {
 		Friend friend;
 		friendCursorCheck();
+
 		friendCursor = db.rawQuery("select * from friend where " + friend_isfavorite + "=" + flag + ";", null);
 		// c.moveToFirst();
 		while (friendCursor.moveToNext()) {
@@ -476,6 +500,7 @@ public class DBManager {
 	public ConcurrentLinkedQueue<Friend> selectFriendDB(int flag) {
 		ConcurrentLinkedQueue<Friend> friendlist = new ConcurrentLinkedQueue<Friend>();
 		Friend friend;
+
 		friendCursorCheck();
 		friendCursor = db.rawQuery("select * from friend where " + friend_isflag + "=" + flag + ";", null);
 		// c.moveToFirst();
@@ -492,12 +517,11 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
-			friend.iIsBlack=friendCursor.getInt(12);
+			friend.iIsBlack = friendCursor.getInt(12);
 			friendlist.add(friend);
 		}
 
 		friendCursor.close();
-
 		return friendlist;
 
 	}
@@ -522,7 +546,7 @@ public class DBManager {
 			friend.strAddressDong = friendCursor.getString(9);
 			friend.iIsFavorite = friendCursor.getInt(10);
 			friend.iIsFlag = friendCursor.getInt(11);
-			friend.iIsBlack=friendCursor.getInt(12);
+			friend.iIsBlack = friendCursor.getInt(12);
 			Log.e("!!!!!!!!!!!!!", friend.iIsFlag + "");
 		}
 		friendCursor.close();
@@ -554,6 +578,7 @@ public class DBManager {
 		Link link = null;
 
 		friendCursorCheck();
+
 		linkCursor = db.rawQuery("select * from " + table_link + " where " + link_id + "='" + id + "';", null);
 		// c.moveToFirst();
 		if (linkCursor.moveToNext()) {

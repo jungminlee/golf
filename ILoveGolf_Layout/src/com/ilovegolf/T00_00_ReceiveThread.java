@@ -88,9 +88,8 @@ public class T00_00_ReceiveThread extends Thread {
 						Log.e("recv", "recvPING");
 					} else if (message.indexOf("ADDRESSSI") != -1) {
 						if (!sp.getBoolean("sidown", false)) {
+							String si = msg.getString("Address_si");
 							synchronized (StaticClass.dbm) {
-								String si = msg.getString("Address_si");
-								System.out.println("recvSISISISIS" + si);
 								StaticClass.dbm.insertAddressDB(si);
 							}
 						}
@@ -210,7 +209,11 @@ public class T00_00_ReceiveThread extends Thread {
 						String messageid = msg.getString("Message_ID");
 						String sender = msg.getString("Sender_ID");
 
-						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+						boolean flag = true;
+						synchronized (StaticClass.dbm) {
+							flag = StaticClass.dbm.selectFriendBlackDB(sender);
+						}
+						if (!flag) {
 							RecvMessage recv = new RecvMessage();
 							recv.strPeopleID = sender;
 							recv.strPeopleName = msg.getString("Sender_Name");
@@ -253,9 +256,12 @@ public class T00_00_ReceiveThread extends Thread {
 						String sender = msg.getString("Sender_ID");
 
 						System.out.println("확인해본당");
-						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+						boolean flag = true;
+						synchronized (StaticClass.dbm) {
+							flag = StaticClass.dbm.selectFriendBlackDB(sender);
+						}
+						if (!flag) {
 							System.out.println("차단안했음");
-
 
 							RecvMessage recv = new RecvMessage();
 							recv.strPeopleID = sender;
@@ -362,8 +368,11 @@ public class T00_00_ReceiveThread extends Thread {
 					} else if (message.indexOf("OLDSENDREQUEST") != -1) {
 
 						String sender = msg.getString("Sender_ID");
-
-						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+						boolean flag = true;
+						synchronized (StaticClass.dbm) {
+							flag = StaticClass.dbm.selectFriendBlackDB(sender);
+						}
+						if (!flag) {
 							Friend friend = null;
 							synchronized (StaticClass.dbm) {
 								friend = StaticClass.dbm.selectFriendDB(sender);
@@ -393,8 +402,11 @@ public class T00_00_ReceiveThread extends Thread {
 						}
 					} else if (message.indexOf("SENDREQUEST") != -1) {
 						String sender = msg.getString("Sender_ID");
-
-						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+						boolean flag = true;
+						synchronized (StaticClass.dbm) {
+							flag = StaticClass.dbm.selectFriendBlackDB(sender);
+						}
+						if (!flag) {
 							Friend friend = null;
 							synchronized (StaticClass.dbm) {
 								friend = StaticClass.dbm.selectFriendDB(sender);
@@ -402,12 +414,16 @@ public class T00_00_ReceiveThread extends Thread {
 
 							friend.iIsFlag = 2;
 
-							StaticClass.dbm.updateFriendDB(friend);
+							synchronized (StaticClass.dbm) {
+								StaticClass.dbm.updateFriendDB(friend);
+							}
 
 							ChatRoom chatroom = new ChatRoom();
 							chatroom.strRoomID = friend.strID;
 							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
-							StaticClass.dbm.updateChatRoomDB(chatroom);
+							synchronized (StaticClass.dbm) {
+								StaticClass.dbm.updateChatRoomDB(chatroom);
+							}
 
 							hanMessage = new Message();
 							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
@@ -461,7 +477,9 @@ public class T00_00_ReceiveThread extends Thread {
 							ChatRoom chatroom = new ChatRoom();
 							chatroom.strRoomID = friend.strID;
 							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
-							StaticClass.dbm.updateChatRoomDB(chatroom);
+							synchronized (StaticClass.dbm) {
+								StaticClass.dbm.updateChatRoomDB(chatroom);
+							}
 
 							hanMessage = new Message();
 							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;
@@ -480,8 +498,11 @@ public class T00_00_ReceiveThread extends Thread {
 						}
 					} else if (message.indexOf("ACCEPTREQUEST") != -1) {
 						String sender = msg.getString("Sender_ID");
-
-						if (!StaticClass.dbm.selectFriendBlackDB(sender)) {
+						boolean flag = true;
+						synchronized (StaticClass.dbm) {
+							flag = StaticClass.dbm.selectFriendBlackDB(sender);
+						}
+						if (!flag) {
 							Friend friend = null;
 							synchronized (StaticClass.dbm) {
 								friend = StaticClass.dbm.selectFriendDB(sender);
@@ -493,7 +514,10 @@ public class T00_00_ReceiveThread extends Thread {
 							ChatRoom chatroom = new ChatRoom();
 							chatroom.strRoomID = friend.strID;
 							chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
-							StaticClass.dbm.updateChatRoomDB(chatroom);
+							synchronized (StaticClass.dbm) {
+
+								StaticClass.dbm.updateChatRoomDB(chatroom);
+							}
 
 							hanMessage = new Message();
 							hanMessage.arg1 = StaticClass.CHATROOM_REFRESH;

@@ -84,7 +84,7 @@ public class StaticClass {
 		return options;
 	}
 
-	public static final int DB_VERSION = 132;
+	public static final int DB_VERSION = 134;
 	public static String Result = "";
 	public static final String Succ = "100";
 	public static final String Fail = "400";

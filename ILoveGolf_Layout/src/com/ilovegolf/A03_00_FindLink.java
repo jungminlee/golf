@@ -299,7 +299,6 @@ public class A03_00_FindLink extends TabActivity {
 							}
 							synchronized (StaticClass.dbm) {
 								StaticClass.dbm.updateLinkDB(link);
-								System.out.println("입력된 골프장 수~~:" + StaticClass.dbm.selectLinkDBAll());
 
 							}
 

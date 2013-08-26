@@ -98,7 +98,7 @@ public class A05_01_03_ModifyAdress extends BaseActivity {
 		tempAddress_si = sp.getString("myAddress_si", "");
 		tempAddress_gu = sp.getString("myAddress_gu", "");
 		tempAddress_dong = sp.getString("myAddress_dong", "");
-		
+
 		combo_si.setText(tempAddress_si);
 		combo_gu.setText(tempAddress_gu);
 		combo_dong.setText(tempAddress_dong);
@@ -123,7 +123,10 @@ public class A05_01_03_ModifyAdress extends BaseActivity {
 					gu_list.clear();
 					InputAddress add = new InputAddress();
 					add.strAddress_si = tempAddress_si;
-					StaticClass.dbm.selectAddressDB(gu_list, 2, add);
+					synchronized (StaticClass.dbm) {
+						StaticClass.dbm.selectAddressDB(gu_list, 2, add);
+
+					}
 					int size = gu_list.size();
 					String siArray[] = new String[size];
 					for (int i = 0; i < size; i++) {
@@ -148,7 +151,10 @@ public class A05_01_03_ModifyAdress extends BaseActivity {
 					InputAddress add = new InputAddress();
 					add.strAddress_si = tempAddress_si;
 					add.strAddress_gu = tempAddress_gu;
-					StaticClass.dbm.selectAddressDB(dong_list, 3, add);
+					synchronized (StaticClass.dbm) {
+						StaticClass.dbm.selectAddressDB(dong_list, 3, add);
+
+					}
 					int size = dong_list.size();
 					String siArray[] = new String[size];
 					for (int i = 0; i < size; i++) {
@@ -171,8 +177,10 @@ public class A05_01_03_ModifyAdress extends BaseActivity {
 		combo_si.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				synchronized (StaticClass.dbm) {
+					StaticClass.dbm.selectAddressDB(si_list, 1, null);
 
-				StaticClass.dbm.selectAddressDB(si_list, 1, null);
+				}
 				int size = si_list.size();
 				String siArray[] = new String[size];
 				for (int i = 0; i < size; i++) {
@@ -200,10 +208,14 @@ public class A05_01_03_ModifyAdress extends BaseActivity {
 		combo_gu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(tempAddress_si!=null && tempAddress_si!="")  {
+				if (tempAddress_si != null && tempAddress_si != "") {
 					InputAddress add = new InputAddress();
 					add.strAddress_si = tempAddress_si;
-					if (!StaticClass.dbm.selectAddressDB(2, add)) {
+					boolean flag=true;
+					synchronized (StaticClass.dbm) {
+						flag=StaticClass.dbm.selectAddressDB(2, add);
+					}
+					if (!flag) {
 						try {
 							if (!StaticClass.DataSoc.isConnected())
 								StaticClass.DataSoc = new SocketIO(StaticClass.IP, StaticClass.PORT);
@@ -232,11 +244,15 @@ public class A05_01_03_ModifyAdress extends BaseActivity {
 		combo_dong.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(tempAddress_gu!=null && tempAddress_gu!="") {
+				if (tempAddress_gu != null && tempAddress_gu != "") {
 					InputAddress add = new InputAddress();
 					add.strAddress_si = tempAddress_si;
 					add.strAddress_gu = tempAddress_gu;
-					if (!StaticClass.dbm.selectAddressDB(3, add)) {
+					boolean flag=true;
+					synchronized (StaticClass.dbm) {
+						flag=StaticClass.dbm.selectAddressDB(3, add);
+					}
+					if (!flag) {
 						System.out.println(":+:+:+:+:+:+:¿äÃ»");
 						try {
 							if (!StaticClass.DataSoc.isConnected())

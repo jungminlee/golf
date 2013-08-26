@@ -56,7 +56,7 @@ public class A05_04_Payment extends BaseActivity {
 
 	IabHelper mHelper;
 
-	static final String SKU_GOLF = "test11";
+	static final String SKU_GOLF = "test12";
 
 	boolean pay = false;
 

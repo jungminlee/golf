@@ -76,7 +76,7 @@ public class A00_00_Loading extends BaseActivity {
 						send += "My_ID:" + sp.getString("myID", "") + "\r\n";
 						send += "END\r\n";
 
-						send = "BEGIN SELECTLINK\r\n";
+						send += "BEGIN SELECTLINK\r\n";
 						send += "My_ID:" + sp.getString("myID", "") + "\r\n";
 						send += "Member_Address_si:" + sp.getString("myAddress_si", "") + "\r\n";
 						send += "Member_Address_gu:" + sp.getString("myAddress_gu", "") + "\r\n";

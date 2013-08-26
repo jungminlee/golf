@@ -204,10 +204,10 @@ public class A02_00_Friend extends TabActivity {
 
 					ImageView img_pic = layout_FriendInfo.l02_01_img_pic;
 
-					System.out.println("friend.strImage::::::"+friend.strImage);
-					if (friend.strImage!=null && !friend.strImage.equals(" ") && !friend.strImage.equals("") && !friend.strImage.equals("null"))
+					System.out.println("friend.strImage::::::" + friend.strImage);
+					if (friend.strImage != null && !friend.strImage.equals(" ") && !friend.strImage.equals("") && !friend.strImage.equals("null"))
 						img_pic.setImageBitmap(BitmapFactory.decodeFile("/mnt/sdcard/golfpic/" + friend.strID));
-					else 
+					else
 						img_pic.setImageResource(R.drawable.profile_img);
 					View btn_close = layout_FriendInfo.l02_01_btn_close;
 					btn_favorite = layout_FriendInfo.l02_01_btn_favorite;
@@ -285,8 +285,12 @@ public class A02_00_Friend extends TabActivity {
 						@Override
 						public void onClick(View v) {
 							long today = Long.parseLong(StaticClass.format2.format(new Date()));
+							boolean flag = false;
 							if (sp.getInt("myIsAcount", 0) == 1) {
-								if (!StaticClass.dbm.selectChatRoomDB(friend.strID)) {
+								synchronized (StaticClass.dbm) {
+									flag = StaticClass.dbm.selectChatRoomDB(friend.strID);
+								}
+								if (!flag) {
 									StaticClass.alert = new AlertDialog.Builder(context).create();
 									StaticClass.alert.setTitle("아이러브골프");
 									StaticClass.alert.setMessage(friend.strName + "님께 골프친구 요청 하시겠습니까?");
@@ -317,7 +321,10 @@ public class A02_00_Friend extends TabActivity {
 													send += "END\r\n";
 
 													friend.iIsFlag = 1;
-													StaticClass.dbm.updateFriendDB(friend);
+													synchronized (StaticClass.dbm) {
+														StaticClass.dbm.updateFriendDB(friend);
+
+													}
 												}
 
 												StaticClass.DataSoc.sendMessage(send);
@@ -327,11 +334,13 @@ public class A02_00_Friend extends TabActivity {
 												ChatRoom chatroom = new ChatRoom();
 												chatroom.strRoomID = friend.strID;
 												chatroom.strRoomName = friend.strName;
-												chatroom.strUpdateDate=StaticClass.format.format(new Date()).replace("^", ":");
-												
-												if (!StaticClass.dbm.selectChatRoomDB(friend.strID)) {
-													StaticClass.dbm.insertChatRoomDB(chatroom);
+												chatroom.strUpdateDate = StaticClass.format.format(new Date()).replace("^", ":");
+												synchronized (StaticClass.dbm) {
+													if (!StaticClass.dbm.selectChatRoomDB(friend.strID)) {
+														StaticClass.dbm.insertChatRoomDB(chatroom);
+													}
 												}
+
 											} catch (IOException e) {
 												StaticClass.DataSoc = null;
 											} catch (Exception e) {
@@ -346,14 +355,17 @@ public class A02_00_Friend extends TabActivity {
 									ChatRoom chatroom = new ChatRoom();
 									chatroom.strRoomID = friend.strID;
 									chatroom.strRoomName = friend.strName;
-									if(StaticClass.dbm.selectChatRoomDB(friend.strID)) {
-										Intent intent = new Intent(context.getApplicationContext(), A04_00_RecvMessageList.class);
-										intent.putExtra("id", chatroom.strRoomID);
-										context.startActivity(intent);
-										finish();
-									}else {
-										StaticClass.dbm.insertChatRoomDB(chatroom);
+									synchronized (StaticClass.dbm) {
+										if (StaticClass.dbm.selectChatRoomDB(friend.strID)) {
+											Intent intent = new Intent(context.getApplicationContext(), A04_00_RecvMessageList.class);
+											intent.putExtra("id", chatroom.strRoomID);
+											context.startActivity(intent);
+											finish();
+										} else {
+											StaticClass.dbm.insertChatRoomDB(chatroom);
+										}
 									}
+
 								} else {
 									StaticClass.alert = new AlertDialog.Builder(context).create();
 									StaticClass.alert.setTitle("아이러브골프");

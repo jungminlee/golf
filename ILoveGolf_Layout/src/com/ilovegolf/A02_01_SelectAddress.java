@@ -107,7 +107,9 @@ public class A02_01_SelectAddress extends BaseActivity {
 					gu_list.clear();
 					InputAddress add = new InputAddress();
 					add.strAddress_si = id_si;
-					StaticClass.dbm.selectAddressDB(gu_list, 2, add);
+					synchronized (StaticClass.dbm) {
+						StaticClass.dbm.selectAddressDB(gu_list, 2, add);
+					}
 					int size = gu_list.size();
 					String siArray[] = new String[size];
 					for (int i = 0; i < size; i++) {
@@ -132,7 +134,9 @@ public class A02_01_SelectAddress extends BaseActivity {
 					InputAddress add = new InputAddress();
 					add.strAddress_si = id_si;
 					add.strAddress_gu = id_gu;
-					StaticClass.dbm.selectAddressDB(dong_list, 3, add);
+					synchronized (StaticClass.dbm) {
+						StaticClass.dbm.selectAddressDB(dong_list, 3, add);
+					}
 					int size = dong_list.size();
 					String siArray[] = new String[size];
 					for (int i = 0; i < size; i++) {
@@ -155,7 +159,10 @@ public class A02_01_SelectAddress extends BaseActivity {
 		combo_si.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				StaticClass.dbm.selectAddressDB(si_list, 1, null);
+
+				synchronized (StaticClass.dbm) {
+					StaticClass.dbm.selectAddressDB(si_list, 1, null);
+				}
 				int size = si_list.size();
 				String siArray[] = new String[size];
 				for (int i = 0; i < size; i++) {
@@ -186,7 +193,11 @@ public class A02_01_SelectAddress extends BaseActivity {
 				if (id_si != null && id_si != "") {
 					InputAddress add = new InputAddress();
 					add.strAddress_si = id_si;
-					if (!StaticClass.dbm.selectAddressDB(2, add)) {
+					boolean flag=true;
+					synchronized (StaticClass.dbm) {
+						flag=StaticClass.dbm.selectAddressDB(2, add);
+					}
+					if (!flag) {
 						try {
 							if (!StaticClass.DataSoc.isConnected())
 								StaticClass.DataSoc = new SocketIO(StaticClass.IP, StaticClass.PORT);
@@ -219,7 +230,11 @@ public class A02_01_SelectAddress extends BaseActivity {
 					InputAddress add = new InputAddress();
 					add.strAddress_si = id_si;
 					add.strAddress_gu = id_gu;
-					if (!StaticClass.dbm.selectAddressDB(3, add)) {
+					boolean flag=true;
+					synchronized (StaticClass.dbm) {
+						flag=StaticClass.dbm.selectAddressDB(3, add);
+					}
+					if (!flag) {
 						System.out.println(":+:+:+:+:+:+:¿äÃ»");
 						try {
 							if (!StaticClass.DataSoc.isConnected())
